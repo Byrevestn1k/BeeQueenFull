@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "com.example.beequeen.app-mergeDebugResources-32:/layout/activity_training.xml",
+        "source": "com.example.beequeen.app-main-35:/layout/activity_training.xml"
+    },
+    {
+        "merged": "com.example.beequeen.app-mergeDebugResources-32:/layout/activity_settings.xml",
+        "source": "com.example.beequeen.app-main-35:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.example.beequeen.app-mergeDebugResources-32:/layout/activity_live.xml",
+        "source": "com.example.beequeen.app-main-35:/layout/activity_live.xml"
+    },
+    {
+        "merged": "com.example.beequeen.app-mergeDebugResources-32:/layout/activity_main.xml",
+        "source": "com.example.beequeen.app-main-35:/layout/activity_main.xml"
+    }
+]

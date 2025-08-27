@@ -1,0 +1,29 @@
+R_DEF: Internal format may change without notice
+local
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id btnCorrect
+id btnExportDataset
+id btnImportModel
+id btnIncorrect
+id btnLive
+id btnSettings
+id btnTraining
+id overlay
+id previewView
+id rvImages
+id switchCloud
+id tvInfo
+layout activity_live
+layout activity_main
+layout activity_settings
+layout activity_training
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string live_detection
+string no_model
+string settings
+string training_review
+style Theme.BeeQueen
+xml file_paths

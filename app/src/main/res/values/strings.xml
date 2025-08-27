@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BeeQueen</string>
+    <string name="live_detection">Режим пошуку</string>
+    <string name="training_review">Тренування / Огляд</string>
+    <string name="settings">Налаштування</string>
+    <string name="no_model">Модель не знайдена. Імпортуй .tflite через Тренування.</string>
+</resources>
