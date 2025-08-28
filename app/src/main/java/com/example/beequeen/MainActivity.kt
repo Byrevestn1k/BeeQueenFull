@@ -6,14 +6,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.beequeen.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var vb: ActivityMainBinding
+
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        vb = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(vb.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        vb.btnLive.setOnClickListener { startActivity(Intent(this, LiveActivity::class.java)) }
-        vb.btnTraining.setOnClickListener { startActivity(Intent(this, TrainingActivity::class.java)) }
-        vb.btnSettings.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java)) }
+        // Кнопка для вибору фото
+        binding.btnPickImages.setOnClickListener {
+            val intent = Intent(this, TrainingActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Кнопка для Live Detection
+        binding.btnLiveDetection.setOnClickListener {
+            val intent = Intent(this, LiveActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -8,9 +8,35 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 
-class OverlayView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
-    private val paint = Paint().apply { color = Color.YELLOW; style = Paint.Style.STROKE; strokeWidth = 6f }
-    private var rect: RectF? = null
-    fun setRectF(r: RectF?) { rect = r; invalidate() }
-    override fun onDraw(canvas: Canvas) { super.onDraw(canvas); rect?.let { canvas.drawRect(it, paint) } }
+class OverlayView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null
+) : View(context, attrs) {
+
+    private var rects: List<Pair<RectF, String>> = emptyList()
+
+    private val boxPaint = Paint().apply {
+        color = Color.RED
+        style = Paint.Style.STROKE
+        strokeWidth = 6f
+    }
+
+    private val textPaint = Paint().apply {
+        color = Color.YELLOW
+        textSize = 40f
+        style = Paint.Style.FILL
+    }
+
+    fun setRectF(newRects: List<Pair<RectF, String>>) {
+        rects = newRects
+        invalidate()
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        super.onDraw(canvas)
+        for ((rect, label) in rects) {
+            canvas.drawRect(rect, boxPaint)
+            canvas.drawText(label, rect.left, rect.top - 10, textPaint)
+        }
+    }
 }

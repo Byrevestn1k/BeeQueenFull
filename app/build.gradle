@@ -39,6 +39,13 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    packaging {
+        // потрібно для tflite task-vision, щоб не було конфліктів з metadata
+        resources {
+            excludes += ['META-INF/LICENSE', 'META-INF/LICENSE-FIREBASE.txt', 'META-INF/NOTICE']
+        }
+    }
 }
 
 dependencies {

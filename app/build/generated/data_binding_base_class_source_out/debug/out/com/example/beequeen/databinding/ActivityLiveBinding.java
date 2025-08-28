@@ -4,7 +4,6 @@ package com.example.beequeen.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,23 +21,14 @@ public final class ActivityLiveBinding implements ViewBinding {
   private final FrameLayout rootView;
 
   @NonNull
-  public final Button btnCorrect;
-
-  @NonNull
-  public final Button btnIncorrect;
-
-  @NonNull
   public final OverlayView overlay;
 
   @NonNull
   public final PreviewView previewView;
 
-  private ActivityLiveBinding(@NonNull FrameLayout rootView, @NonNull Button btnCorrect,
-      @NonNull Button btnIncorrect, @NonNull OverlayView overlay,
+  private ActivityLiveBinding(@NonNull FrameLayout rootView, @NonNull OverlayView overlay,
       @NonNull PreviewView previewView) {
     this.rootView = rootView;
-    this.btnCorrect = btnCorrect;
-    this.btnIncorrect = btnIncorrect;
     this.overlay = overlay;
     this.previewView = previewView;
   }
@@ -70,18 +60,6 @@ public final class ActivityLiveBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.btnCorrect;
-      Button btnCorrect = ViewBindings.findChildViewById(rootView, id);
-      if (btnCorrect == null) {
-        break missingId;
-      }
-
-      id = R.id.btnIncorrect;
-      Button btnIncorrect = ViewBindings.findChildViewById(rootView, id);
-      if (btnIncorrect == null) {
-        break missingId;
-      }
-
       id = R.id.overlay;
       OverlayView overlay = ViewBindings.findChildViewById(rootView, id);
       if (overlay == null) {
@@ -94,8 +72,7 @@ public final class ActivityLiveBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityLiveBinding((FrameLayout) rootView, btnCorrect, btnIncorrect, overlay,
-          previewView);
+      return new ActivityLiveBinding((FrameLayout) rootView, overlay, previewView);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

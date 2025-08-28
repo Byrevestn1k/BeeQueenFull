@@ -20,20 +20,16 @@ public final class ActivityMainBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final Button btnLive;
+  public final Button btnLiveDetection;
 
   @NonNull
-  public final Button btnSettings;
+  public final Button btnPickImages;
 
-  @NonNull
-  public final Button btnTraining;
-
-  private ActivityMainBinding(@NonNull LinearLayout rootView, @NonNull Button btnLive,
-      @NonNull Button btnSettings, @NonNull Button btnTraining) {
+  private ActivityMainBinding(@NonNull LinearLayout rootView, @NonNull Button btnLiveDetection,
+      @NonNull Button btnPickImages) {
     this.rootView = rootView;
-    this.btnLive = btnLive;
-    this.btnSettings = btnSettings;
-    this.btnTraining = btnTraining;
+    this.btnLiveDetection = btnLiveDetection;
+    this.btnPickImages = btnPickImages;
   }
 
   @Override
@@ -63,25 +59,19 @@ public final class ActivityMainBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.btnLive;
-      Button btnLive = ViewBindings.findChildViewById(rootView, id);
-      if (btnLive == null) {
+      id = R.id.btnLiveDetection;
+      Button btnLiveDetection = ViewBindings.findChildViewById(rootView, id);
+      if (btnLiveDetection == null) {
         break missingId;
       }
 
-      id = R.id.btnSettings;
-      Button btnSettings = ViewBindings.findChildViewById(rootView, id);
-      if (btnSettings == null) {
+      id = R.id.btnPickImages;
+      Button btnPickImages = ViewBindings.findChildViewById(rootView, id);
+      if (btnPickImages == null) {
         break missingId;
       }
 
-      id = R.id.btnTraining;
-      Button btnTraining = ViewBindings.findChildViewById(rootView, id);
-      if (btnTraining == null) {
-        break missingId;
-      }
-
-      return new ActivityMainBinding((LinearLayout) rootView, btnLive, btnSettings, btnTraining);
+      return new ActivityMainBinding((LinearLayout) rootView, btnLiveDetection, btnPickImages);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));
