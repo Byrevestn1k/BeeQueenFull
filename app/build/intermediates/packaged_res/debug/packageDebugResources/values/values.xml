@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BeeQueen</string>
-    <string name="live_detection">Режим пошуку</string>
-    <string name="no_model">Модель не знайдена. Імпортуй .tflite через Тренування.</string>
-    <string name="settings">Налаштування</string>
-    <string name="training_review">Тренування / Огляд</string>
     <style name="Theme.BeeQueen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#1E88E5</item>
-        <item name="colorPrimaryVariant">#1565C0</item>
-        <item name="colorOnPrimary">#FFFFFF</item>
     </style>
 </resources>

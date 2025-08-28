@@ -2,12 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:gravity="center"
+    android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
-    <Button android:id="@+id/btnLive" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/live_detection" />
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/btnLive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Live Detection" />
+
     <Space android:layout_width="0dp" android:layout_height="12dp" />
-    <Button android:id="@+id/btnTraining" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/training_review" />
+
+    <Button
+        android:id="@+id/btnTraining"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Training / Review" />
+
     <Space android:layout_width="0dp" android:layout_height="12dp" />
-    <Button android:id="@+id/btnSettings" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="@string/settings" />
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Settings" />
 </LinearLayout>

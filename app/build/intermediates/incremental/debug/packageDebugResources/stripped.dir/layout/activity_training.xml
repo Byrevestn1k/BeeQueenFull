@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
-    <Button android:id="@+id/btnImportModel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Імпорт .tflite" />
-    <Button android:id="@+id/btnExportDataset" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Експорт датасету (.zip)" />
-    <TextView android:id="@+id/tvInfo" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="8dp" />
-    <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvImages" android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"/>
+    android:orientation="vertical" android:padding="12dp"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:id="@+id/btnPick" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Pick images"/>
+        <Space android:layout_width="8dp" android:layout_height="8dp"/>
+        <Button android:id="@+id/btnCapture" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Capture"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+        <Button android:id="@+id/btnImportZip" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Import ZIP"/>
+        <Space android:layout_width="8dp" android:layout_height="8dp"/>
+        <Button android:id="@+id/btnExportZip" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="Export ZIP"/>
+    </LinearLayout>
+
+    <TextView android:id="@+id/tvInfo" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="8dp" android:text="0 items"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvImages"
+        android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:padding="4dp"/>
+
+    <Button android:id="@+id/btnImportModel" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Import .tflite"/>
+    <Button android:id="@+id/btnHowToTrain" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="How to train on PC/Cloud" android:layout_marginTop="6dp"/>
+
 </LinearLayout>

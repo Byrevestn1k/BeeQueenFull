@@ -5,16 +5,19 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="26"
+        android:minSdkVersion="24"
         android:targetSdkVersion="34" />
 
-    <!-- Дозволи -->
+    <!-- Permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
-    <!-- Камера є, але не обов’язкова -->
+    <!-- camera optional for devices without camera -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -34,14 +37,12 @@
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:extractNativeLibs="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/ic_menu_camera"
         android:label="BeeQueen"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@android:drawable/ic_menu_camera"
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/Theme.BeeQueen" >
-
-        <!-- Launcher Activity -->
         <activity
             android:name="com.example.beequeen.MainActivity"
             android:exported="true" >
@@ -51,8 +52,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Інші активності -->
         <activity
             android:name="com.example.beequeen.LiveActivity"
             android:exported="false" />
@@ -62,6 +61,16 @@
         <activity
             android:name="com.example.beequeen.SettingsActivity"
             android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.beequeen.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <service
             android:name="androidx.camera.core.impl.MetadataHolderService"
@@ -82,7 +91,30 @@
             <meta-data
                 android:name="androidx.lifecycle.ProcessLifecycleInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+                android:value="androidx.startup" />
         </provider>
+
+        <receiver
+            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+            android:directBootAware="false"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.DUMP" >
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

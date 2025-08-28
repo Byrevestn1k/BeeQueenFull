@@ -22,10 +22,22 @@ public final class ActivityTrainingBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final Button btnExportDataset;
+  public final Button btnCapture;
+
+  @NonNull
+  public final Button btnExportZip;
+
+  @NonNull
+  public final Button btnHowToTrain;
 
   @NonNull
   public final Button btnImportModel;
+
+  @NonNull
+  public final Button btnImportZip;
+
+  @NonNull
+  public final Button btnPick;
 
   @NonNull
   public final RecyclerView rvImages;
@@ -33,11 +45,17 @@ public final class ActivityTrainingBinding implements ViewBinding {
   @NonNull
   public final TextView tvInfo;
 
-  private ActivityTrainingBinding(@NonNull LinearLayout rootView, @NonNull Button btnExportDataset,
-      @NonNull Button btnImportModel, @NonNull RecyclerView rvImages, @NonNull TextView tvInfo) {
+  private ActivityTrainingBinding(@NonNull LinearLayout rootView, @NonNull Button btnCapture,
+      @NonNull Button btnExportZip, @NonNull Button btnHowToTrain, @NonNull Button btnImportModel,
+      @NonNull Button btnImportZip, @NonNull Button btnPick, @NonNull RecyclerView rvImages,
+      @NonNull TextView tvInfo) {
     this.rootView = rootView;
-    this.btnExportDataset = btnExportDataset;
+    this.btnCapture = btnCapture;
+    this.btnExportZip = btnExportZip;
+    this.btnHowToTrain = btnHowToTrain;
     this.btnImportModel = btnImportModel;
+    this.btnImportZip = btnImportZip;
+    this.btnPick = btnPick;
     this.rvImages = rvImages;
     this.tvInfo = tvInfo;
   }
@@ -69,15 +87,39 @@ public final class ActivityTrainingBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.btnExportDataset;
-      Button btnExportDataset = ViewBindings.findChildViewById(rootView, id);
-      if (btnExportDataset == null) {
+      id = R.id.btnCapture;
+      Button btnCapture = ViewBindings.findChildViewById(rootView, id);
+      if (btnCapture == null) {
+        break missingId;
+      }
+
+      id = R.id.btnExportZip;
+      Button btnExportZip = ViewBindings.findChildViewById(rootView, id);
+      if (btnExportZip == null) {
+        break missingId;
+      }
+
+      id = R.id.btnHowToTrain;
+      Button btnHowToTrain = ViewBindings.findChildViewById(rootView, id);
+      if (btnHowToTrain == null) {
         break missingId;
       }
 
       id = R.id.btnImportModel;
       Button btnImportModel = ViewBindings.findChildViewById(rootView, id);
       if (btnImportModel == null) {
+        break missingId;
+      }
+
+      id = R.id.btnImportZip;
+      Button btnImportZip = ViewBindings.findChildViewById(rootView, id);
+      if (btnImportZip == null) {
+        break missingId;
+      }
+
+      id = R.id.btnPick;
+      Button btnPick = ViewBindings.findChildViewById(rootView, id);
+      if (btnPick == null) {
         break missingId;
       }
 
@@ -93,8 +135,8 @@ public final class ActivityTrainingBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityTrainingBinding((LinearLayout) rootView, btnExportDataset, btnImportModel,
-          rvImages, tvInfo);
+      return new ActivityTrainingBinding((LinearLayout) rootView, btnCapture, btnExportZip,
+          btnHowToTrain, btnImportModel, btnImportZip, btnPick, rvImages, tvInfo);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

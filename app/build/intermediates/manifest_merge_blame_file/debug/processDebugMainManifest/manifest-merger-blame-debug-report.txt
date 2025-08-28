@@ -5,145 +5,209 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-8        android:minSdkVersion="26"
+8        android:minSdkVersion="24"
 9        android:targetSdkVersion="34" />
 10
-11    <!-- Дозволи -->
+11    <!-- Permissions -->
 12    <uses-permission android:name="android.permission.CAMERA" />
 12-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:6:5-65
 12-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:6:22-62
-13    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-13-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:7:5-81
-13-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:7:22-78
+13    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+13-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:7:5-71
+13-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:7:22-68
 14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 14-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:8:5-80
 14-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:8:22-77
-15    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-15-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:9:5-71
-15-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:9:22-68
-16
-17    <!-- Камера є, але не обов’язкова -->
-18    <uses-feature
-18-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:12:5-85
-19        android:name="android.hardware.camera"
-19-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:12:19-57
-20        android:required="false" />
-20-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:12:58-82
+15    <uses-permission
+15-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:9:5-107
+16        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+16-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:9:22-78
+17        android:maxSdkVersion="28" />
+17-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:9:79-105
+18    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+18-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:10:5-76
+18-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:10:22-73
+19
+20    <!-- camera optional for devices without camera -->
 21    <uses-feature
-21-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:13:5-95
-22        android:name="android.hardware.camera.autofocus"
-22-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:13:19-67
+21-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:13:5-85
+22        android:name="android.hardware.camera"
+22-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:13:19-57
 23        android:required="false" />
-23-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:13:68-92
-24
-25    <permission
-25-->[androidx.core:core:1.12.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\586adb0616ac9d55bb62cf144277f417\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
-26        android:name="com.example.beequeen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-26-->[androidx.core:core:1.12.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\586adb0616ac9d55bb62cf144277f417\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
-27        android:protectionLevel="signature" />
-27-->[androidx.core:core:1.12.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\586adb0616ac9d55bb62cf144277f417\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
-28
-29    <uses-permission android:name="com.example.beequeen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-29-->[androidx.core:core:1.12.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\586adb0616ac9d55bb62cf144277f417\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
-29-->[androidx.core:core:1.12.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\586adb0616ac9d55bb62cf144277f417\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
-30    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+23-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:13:58-82
+24    <uses-feature
+24-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:14:5-95
+25        android:name="android.hardware.camera.autofocus"
+25-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:14:19-67
+26        android:required="false" />
+26-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:14:68-92
+27
+28    <permission
+28-->[androidx.core:core:1.13.1] C:\Users\PC\.gradle\caches\8.13\transforms\5a6548d7d12c0be75d1e941cffad578f\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+29        android:name="com.example.beequeen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+29-->[androidx.core:core:1.13.1] C:\Users\PC\.gradle\caches\8.13\transforms\5a6548d7d12c0be75d1e941cffad578f\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+30        android:protectionLevel="signature" />
+30-->[androidx.core:core:1.13.1] C:\Users\PC\.gradle\caches\8.13\transforms\5a6548d7d12c0be75d1e941cffad578f\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
 31
-32    <application
-32-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:15:5-46:19
-33        android:allowBackup="true"
-33-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:16:9-35
-34        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-34-->[androidx.core:core:1.12.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\586adb0616ac9d55bb62cf144277f417\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
-35        android:debuggable="true"
-36        android:extractNativeLibs="false"
-37        android:icon="@mipmap/ic_launcher"
-37-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:17:9-43
-38        android:label="BeeQueen"
-38-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:18:9-33
-39        android:roundIcon="@mipmap/ic_launcher_round"
-39-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:19:9-54
-40        android:supportsRtl="true"
-40-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:20:9-35
-41        android:testOnly="true"
-42        android:theme="@style/Theme.BeeQueen" >
-42-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:21:9-46
-43
-44        <!-- Launcher Activity -->
-45        <activity
-45-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:24:9-31:20
-46            android:name="com.example.beequeen.MainActivity"
-46-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:25:13-41
-47            android:exported="true" >
-47-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:26:13-36
-48            <intent-filter>
-48-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:27:13-30:29
-49                <action android:name="android.intent.action.MAIN" />
-49-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:28:17-69
-49-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:28:25-66
-50
-51                <category android:name="android.intent.category.LAUNCHER" />
-51-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:29:17-77
-51-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:29:27-74
-52            </intent-filter>
-53        </activity>
-54
-55        <!-- Інші активності -->
-56        <activity
-56-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:34:9-36:40
-57            android:name="com.example.beequeen.LiveActivity"
-57-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:35:13-41
-58            android:exported="false" />
-58-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:36:13-37
-59        <activity
-59-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:38:9-40:40
-60            android:name="com.example.beequeen.TrainingActivity"
-60-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:39:13-45
-61            android:exported="false" />
-61-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:40:13-37
-62        <activity
-62-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:42:9-44:40
-63            android:name="com.example.beequeen.SettingsActivity"
-63-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:43:13-45
-64            android:exported="false" />
-64-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:44:13-37
-65
-66        <service
-66-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:24:9-33:19
-67            android:name="androidx.camera.core.impl.MetadataHolderService"
-67-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:25:13-75
-68            android:enabled="false"
-68-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:26:13-36
-69            android:exported="false" >
-69-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:27:13-37
+32    <uses-permission android:name="com.example.beequeen.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+32-->[androidx.core:core:1.13.1] C:\Users\PC\.gradle\caches\8.13\transforms\5a6548d7d12c0be75d1e941cffad578f\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+32-->[androidx.core:core:1.13.1] C:\Users\PC\.gradle\caches\8.13\transforms\5a6548d7d12c0be75d1e941cffad578f\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+33    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+34
+35    <application
+35-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:16:5-42:19
+36        android:allowBackup="true"
+36-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:17:9-35
+37        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+37-->[androidx.core:core:1.13.1] C:\Users\PC\.gradle\caches\8.13\transforms\5a6548d7d12c0be75d1e941cffad578f\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+38        android:debuggable="true"
+39        android:extractNativeLibs="false"
+40        android:icon="@android:drawable/ic_menu_camera"
+40-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:19:9-56
+41        android:label="BeeQueen"
+41-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:18:9-33
+42        android:roundIcon="@android:drawable/ic_menu_camera"
+42-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:20:9-61
+43        android:supportsRtl="true"
+43-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:21:9-35
+44        android:testOnly="true"
+45        android:theme="@style/Theme.BeeQueen" >
+45-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:22:9-46
+46        <activity
+46-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:24:9-29:20
+47            android:name="com.example.beequeen.MainActivity"
+47-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:24:19-47
+48            android:exported="true" >
+48-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:24:48-71
+49            <intent-filter>
+49-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:25:13-28:29
+50                <action android:name="android.intent.action.MAIN" />
+50-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:26:17-68
+50-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:26:25-66
+51
+52                <category android:name="android.intent.category.LAUNCHER" />
+52-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:27:17-76
+52-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:27:27-74
+53            </intent-filter>
+54        </activity>
+55        <activity
+55-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:31:9-74
+56            android:name="com.example.beequeen.LiveActivity"
+56-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:31:19-47
+57            android:exported="false" />
+57-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:31:48-72
+58        <activity
+58-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:32:9-78
+59            android:name="com.example.beequeen.TrainingActivity"
+59-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:32:19-51
+60            android:exported="false" />
+60-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:32:52-76
+61        <activity
+61-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:33:9-78
+62            android:name="com.example.beequeen.SettingsActivity"
+62-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:33:19-51
+63            android:exported="false" />
+63-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:33:52-76
+64
+65        <provider
+65-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:35:9-41:20
+66            android:name="androidx.core.content.FileProvider"
+66-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:36:13-62
+67            android:authorities="com.example.beequeen.provider"
+67-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:37:13-64
+68            android:exported="false"
+68-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:38:13-37
+69            android:grantUriPermissions="true" >
+69-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:39:13-47
 70            <meta-data
-70-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:30:13-32:89
-71                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
-71-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:31:17-103
-72                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
-72-->[androidx.camera:camera-camera2:1.3.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\b6ad9aabb2e6ba60f34fa348624242c3\transformed\jetified-camera-camera2-1.3.0\AndroidManifest.xml:32:17-86
-73        </service>
+70-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:40:13-111
+71                android:name="android.support.FILE_PROVIDER_PATHS"
+71-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:40:24-74
+72                android:resource="@xml/file_paths" />
+72-->C:\Users\PC\AndroidStudioProjects\BeeQueenFull\app\src\main\AndroidManifest.xml:40:75-109
+73        </provider>
 74
-75        <provider
-75-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-76            android:name="androidx.startup.InitializationProvider"
-76-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-77            android:authorities="com.example.beequeen.androidx-startup"
-77-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+75        <service
+75-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:24:9-33:19
+76            android:name="androidx.camera.core.impl.MetadataHolderService"
+76-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:25:13-75
+77            android:enabled="false"
+77-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:26:13-36
 78            android:exported="false" >
-78-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+78-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:27:13-37
 79            <meta-data
-79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-80                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-81                android:value="androidx.startup" />
-81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\8755f26f6c4d1fb5447f3820e42a40fa\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-82            <meta-data
-82-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\4e7d74f9cdb103f0278c09c29f5fe8a7\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
-83                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-83-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\4e7d74f9cdb103f0278c09c29f5fe8a7\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
-84                android:value="androidx.startup" />
-84-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\PC\.gradle\caches\9.0-milestone-1\transforms\4e7d74f9cdb103f0278c09c29f5fe8a7\transformed\jetified-lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
-85        </provider>
-86    </application>
-87
-88</manifest>
+79-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:30:13-32:89
+80                android:name="androidx.camera.core.impl.MetadataHolderService.DEFAULT_CONFIG_PROVIDER"
+80-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:31:17-103
+81                android:value="androidx.camera.camera2.Camera2Config$DefaultProvider" />
+81-->[androidx.camera:camera-camera2:1.3.4] C:\Users\PC\.gradle\caches\8.13\transforms\64fa3bde0b3cddaa2e56fbe310b8b822\transformed\jetified-camera-camera2-1.3.4\AndroidManifest.xml:32:17-86
+82        </service>
+83
+84        <provider
+84-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:24:9-32:20
+85            android:name="androidx.startup.InitializationProvider"
+85-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:25:13-67
+86            android:authorities="com.example.beequeen.androidx-startup"
+86-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:26:13-68
+87            android:exported="false" >
+87-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:27:13-37
+88            <meta-data
+88-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:29:13-31:52
+89                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+89-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:30:17-75
+90                android:value="androidx.startup" />
+90-->[androidx.emoji2:emoji2:1.3.0] C:\Users\PC\.gradle\caches\8.13\transforms\a54b67a7ef6b36b58c1e1eb9d7119a8a\transformed\jetified-emoji2-1.3.0\AndroidManifest.xml:31:17-49
+91            <meta-data
+91-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\PC\.gradle\caches\8.13\transforms\156bc0a7738dc201a2874fee389eb011\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+92                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+92-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\PC\.gradle\caches\8.13\transforms\156bc0a7738dc201a2874fee389eb011\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+93                android:value="androidx.startup" />
+93-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\PC\.gradle\caches\8.13\transforms\156bc0a7738dc201a2874fee389eb011\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+94            <meta-data
+94-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+95                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+95-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+96                android:value="androidx.startup" />
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+97        </provider>
+98
+99        <receiver
+99-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+100            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+100-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+101            android:directBootAware="false"
+101-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+102            android:enabled="true"
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+103            android:exported="true"
+103-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+104            android:permission="android.permission.DUMP" >
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+105            <intent-filter>
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+106                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+106-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+106-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+107            </intent-filter>
+108            <intent-filter>
+108-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+109                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+110            </intent-filter>
+111            <intent-filter>
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+112                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+112-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+113            </intent-filter>
+114            <intent-filter>
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+115                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\PC\.gradle\caches\8.13\transforms\662c3392c4cbbba079cbea940a29ea0d\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+116            </intent-filter>
+117        </receiver>
+118    </application>
+119
+120</manifest>
