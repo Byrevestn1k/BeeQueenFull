@@ -1,0 +1,4 @@
+queen
+worker
+drone
+varroa
