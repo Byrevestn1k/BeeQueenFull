@@ -56,10 +56,6 @@
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\test_bee.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/xml_file_paths.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/xml/file_paths.xml"
-    },
-    {
         "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_thumb_orange.xml.flat",
         "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\thumb_orange.xml"
     },

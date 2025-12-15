@@ -1,0 +1,145 @@
+✅ СТРУКТУРА ПРОЕКТУ BeeQueenFull (ПО ФУНКЦІЯХ)
+
+Я згрупував по ролях: UI, Camera, Detector, Utils, Model, Storage.
+
+Якщо я десь неточно інтерпретував роль файлу — просто скажи, і я одразу уточню.
+
+📌 1. ГОЛОВНА ЛОГІКА ДОДАТКА (Activity / UI)
+MainActivity.kt
+
+Головний екран.
+
+Обробляє запуск детекції, навігацію, показ контенту.
+
+Контролює взаємодію з CameraXActivity або з детектором прямо в себе (залежно від версії).
+
+CameraXActivity.kt або CameraActivity.kt
+
+Основний модуль роботи з камерою.
+
+Отримує preview frames.
+
+Передає кадри в TFLite детектор.
+
+Отримує бокси, відправляє їх на overlay canvas.
+
+Саме тут зазвичай і виникають помилки з масштабуванням рамок.
+
+📌 2. ОВЕРЛЕЙ ТА МАЛЮВАННЯ РАМOК
+OverlayView.kt / BoundingBoxView.kt / DrawOverlay.kt
+
+Відповідає за:
+
+малювання прямокутників;
+
+масштабування координат;
+
+позиціювання на екрані;
+
+колір, товщину лінії;
+
+текст (confidence, label).
+
+Ці файли найчастіше містять помилку: модельні координати не відповідають координатам камери.
+
+📌 3. TFLite / YOLO / ML МОДУЛЬ
+Detector.kt / TFLiteDetector.kt
+
+Завантажує .tflite модель.
+
+Готує tensors.
+
+Запускає інференс.
+
+Робить NMS.
+
+Повертає список Box / DetectionResult.
+
+Processing.kt або Utils.kt
+
+Масштабування картинки перед інференсом.
+
+Перевід координат між різними роздільностями.
+
+Конвертація ByteBuffer у тензор.
+
+📌 4. МОДЕЛЬНІ СТРУКТУРИ
+Box.kt, RectF, Detection.kt, Prediction.kt
+
+Простi data-класи:
+
+координати,
+
+confidence score,
+
+label,
+
+індекс класу.
+
+📌 5. CAMERAX ТА ОТРИМАННЯ КАДРІВ
+CameraProvider.kt, CameraConfig.kt, ImageAnalyzer.kt
+
+Отримують потоки від камери.
+
+Визначають реальну роздільність Preview та ImageAnalysis.
+
+Саме тут можна дістати previewWidth / previewHeight — критично для коректного масштабування.
+
+У 90% проектів проблема з рамками виникає через те, що використовується не той розмір кадра, який повертає CameraX.
+
+📌 6. ФАЙЛИ ДЛЯ ЗБЕРЕЖЕННЯ / НАЛАШТУВАННЯ
+Prefs.kt / Settings.kt
+
+Поріг впевненості (threshold).
+
+Увімкнення/вимкнення overlay.
+
+Режим продуктивності.
+
+📌 7. РЕСУРСИ
+res/layout/*.xml
+
+UI-екрани.
+
+Розташування preview + overlay.
+
+res/drawable/*.xml / icons
+
+Стилі, іконки маток, індикатори.
+
+📌 8. МОДЕЛЬ
+app/src/main/assets/model.tflite
+
+Сама YOLOv8 / custom модель.
+
+✔️ ПІДСУМОК
+
+Твої ключові точки для масштабування рамок:
+
+🚩 A. CameraX (справжня роздільність кадра)
+
+Находиться у файлах:
+
+CameraXActivity.kt
+
+ImageAnalyzer.kt
+
+🚩 B. Detector → координати в моделі (320×320 / 640×640)
+
+Файли:
+
+Detector.kt
+
+TFLiteDetector.kt
+
+🚩 C. OverlayView (малювання та масштабування)
+
+Файли:
+
+OverlayView.kt
+
+BoundingBoxView.kt
+
+DrawOverlay.kt
+
+👉 Саме ці 3 групи треба синхронізувати.
