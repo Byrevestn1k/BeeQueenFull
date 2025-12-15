@@ -1,5 +1,6 @@
 R_DEF: Internal format may change without notice
 local
+drawable bg_color_preview
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable seekbar_track
@@ -11,29 +12,35 @@ id btnHowToTrain
 id btnImportModel
 id btnImportZip
 id btnLive
+id btnMenu
 id btnPick
 id btnSettings
 id btnTest
 id btnTraining
+id cbEnabled
+id containerMarkers
 id imageView
 id imgThumb
-id maxText
-id minText
 id overlay
-id percentText
 id rvImages
-id seekBarVertical
+id seekColor
+id seekThreshold
 id switchCloud
+id tvConfidence
 id tvInfo
 id tvLabel
+id tvTitle
 id txtResult
+id viewColorPreview
 id viewFinder
 layout activity_detector_test
 layout activity_live
 layout activity_main
 layout activity_settings
 layout activity_training
+layout dialog_settings
 layout item_image
+layout item_marker_settings
 mipmap ic_launcher
 mipmap ic_launcher_round
 raw beep

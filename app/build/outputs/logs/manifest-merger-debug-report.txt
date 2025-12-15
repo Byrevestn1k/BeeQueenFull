@@ -58,10 +58,10 @@ MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\User
 MERGED from [androidx.print:print:1.0.0] C:\Users\PC\.gradle\caches\8.13\transforms\628d61a731dfbe453c26dfec9efd67cf\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [org.tensorflow:tensorflow-lite-support:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\2f5eaf7fbf35d0865159cf70b548a037\transformed\jetified-tensorflow-lite-support-0.4.4\AndroidManifest.xml:2:1-5:12
 MERGED from [org.tensorflow:tensorflow-lite:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\c043e179c2fdf98fdbc32dce84f2da8e\transformed\jetified-tensorflow-lite-2.14.0\AndroidManifest.xml:2:1-11:12
-MERGED from [org.tensorflow:tensorflow-lite-gpu:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\812bf23ee8ae7ec616114e37c310a0d6\transformed\jetified-tensorflow-lite-gpu-2.14.0\AndroidManifest.xml:2:1-11:12
+MERGED from [org.tensorflow:tensorflow-lite-gpu:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\40e1fd06b91d3fb04f38b8b41a629291\transformed\jetified-tensorflow-lite-gpu-2.16.1\AndroidManifest.xml:2:1-11:12
 MERGED from [org.tensorflow:tensorflow-lite-task-vision:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\6f3db305ecbb422960a3df667cff41ed\transformed\jetified-tensorflow-lite-task-vision-0.4.4\AndroidManifest.xml:2:1-9:12
 MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\1c09aa0eee0d70dd890ca27486f48c31\transformed\jetified-tensorflow-lite-support-api-0.4.4\AndroidManifest.xml:2:1-5:12
-MERGED from [org.tensorflow:tensorflow-lite-api:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\e90948bca5822dfb1fcea2701a1e7ce5\transformed\jetified-tensorflow-lite-api-2.14.0\AndroidManifest.xml:2:1-11:12
+MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\8bb02dd741ee9335e851faaa65464d86\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:2:1-11:12
 MERGED from [org.tensorflow:tensorflow-lite-task-base:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\f8a4904d254e649e59a71113d0134367\transformed\jetified-tensorflow-lite-task-base-0.4.4\AndroidManifest.xml:2:1-6:12
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\PC\.gradle\caches\8.13\transforms\add62b5f6f8331731990e5c5d86da0ca\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:2:1-9:12
 	package
@@ -140,10 +140,10 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\PC
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\PC\.gradle\caches\8.13\transforms\44ac52fd59024f771c1dfe402570cdb5\transformed\versionedparcelable-1.1.1\AndroidManifest.xml:24:5-25:19
 MERGED from [org.tensorflow:tensorflow-lite:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\c043e179c2fdf98fdbc32dce84f2da8e\transformed\jetified-tensorflow-lite-2.14.0\AndroidManifest.xml:9:5-20
 MERGED from [org.tensorflow:tensorflow-lite:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\c043e179c2fdf98fdbc32dce84f2da8e\transformed\jetified-tensorflow-lite-2.14.0\AndroidManifest.xml:9:5-20
-MERGED from [org.tensorflow:tensorflow-lite-gpu:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\812bf23ee8ae7ec616114e37c310a0d6\transformed\jetified-tensorflow-lite-gpu-2.14.0\AndroidManifest.xml:9:5-20
-MERGED from [org.tensorflow:tensorflow-lite-gpu:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\812bf23ee8ae7ec616114e37c310a0d6\transformed\jetified-tensorflow-lite-gpu-2.14.0\AndroidManifest.xml:9:5-20
-MERGED from [org.tensorflow:tensorflow-lite-api:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\e90948bca5822dfb1fcea2701a1e7ce5\transformed\jetified-tensorflow-lite-api-2.14.0\AndroidManifest.xml:9:5-20
-MERGED from [org.tensorflow:tensorflow-lite-api:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\e90948bca5822dfb1fcea2701a1e7ce5\transformed\jetified-tensorflow-lite-api-2.14.0\AndroidManifest.xml:9:5-20
+MERGED from [org.tensorflow:tensorflow-lite-gpu:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\40e1fd06b91d3fb04f38b8b41a629291\transformed\jetified-tensorflow-lite-gpu-2.16.1\AndroidManifest.xml:9:5-20
+MERGED from [org.tensorflow:tensorflow-lite-gpu:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\40e1fd06b91d3fb04f38b8b41a629291\transformed\jetified-tensorflow-lite-gpu-2.16.1\AndroidManifest.xml:9:5-20
+MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\8bb02dd741ee9335e851faaa65464d86\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:9:5-20
+MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\8bb02dd741ee9335e851faaa65464d86\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:9:5-20
 MERGED from [org.tensorflow:tensorflow-lite-task-base:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\f8a4904d254e649e59a71113d0134367\transformed\jetified-tensorflow-lite-task-base-0.4.4\AndroidManifest.xml:4:4-5:18
 MERGED from [org.tensorflow:tensorflow-lite-task-base:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\f8a4904d254e649e59a71113d0134367\transformed\jetified-tensorflow-lite-task-base-0.4.4\AndroidManifest.xml:4:4-5:18
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\PC\.gradle\caches\8.13\transforms\add62b5f6f8331731990e5c5d86da0ca\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:7:5-20
@@ -326,14 +326,14 @@ MERGED from [org.tensorflow:tensorflow-lite-support:0.4.4] C:\Users\PC\.gradle\c
 MERGED from [org.tensorflow:tensorflow-lite-support:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\2f5eaf7fbf35d0865159cf70b548a037\transformed\jetified-tensorflow-lite-support-0.4.4\AndroidManifest.xml:4:3-71
 MERGED from [org.tensorflow:tensorflow-lite:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\c043e179c2fdf98fdbc32dce84f2da8e\transformed\jetified-tensorflow-lite-2.14.0\AndroidManifest.xml:6:5-7:38
 MERGED from [org.tensorflow:tensorflow-lite:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\c043e179c2fdf98fdbc32dce84f2da8e\transformed\jetified-tensorflow-lite-2.14.0\AndroidManifest.xml:6:5-7:38
-MERGED from [org.tensorflow:tensorflow-lite-gpu:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\812bf23ee8ae7ec616114e37c310a0d6\transformed\jetified-tensorflow-lite-gpu-2.14.0\AndroidManifest.xml:6:5-7:38
-MERGED from [org.tensorflow:tensorflow-lite-gpu:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\812bf23ee8ae7ec616114e37c310a0d6\transformed\jetified-tensorflow-lite-gpu-2.14.0\AndroidManifest.xml:6:5-7:38
+MERGED from [org.tensorflow:tensorflow-lite-gpu:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\40e1fd06b91d3fb04f38b8b41a629291\transformed\jetified-tensorflow-lite-gpu-2.16.1\AndroidManifest.xml:6:5-7:38
+MERGED from [org.tensorflow:tensorflow-lite-gpu:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\40e1fd06b91d3fb04f38b8b41a629291\transformed\jetified-tensorflow-lite-gpu-2.16.1\AndroidManifest.xml:6:5-7:38
 MERGED from [org.tensorflow:tensorflow-lite-task-vision:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\6f3db305ecbb422960a3df667cff41ed\transformed\jetified-tensorflow-lite-task-vision-0.4.4\AndroidManifest.xml:5:5-7:41
 MERGED from [org.tensorflow:tensorflow-lite-task-vision:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\6f3db305ecbb422960a3df667cff41ed\transformed\jetified-tensorflow-lite-task-vision-0.4.4\AndroidManifest.xml:5:5-7:41
 MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\1c09aa0eee0d70dd890ca27486f48c31\transformed\jetified-tensorflow-lite-support-api-0.4.4\AndroidManifest.xml:4:3-71
 MERGED from [org.tensorflow:tensorflow-lite-support-api:0.4.4] C:\Users\PC\.gradle\caches\8.13\transforms\1c09aa0eee0d70dd890ca27486f48c31\transformed\jetified-tensorflow-lite-support-api-0.4.4\AndroidManifest.xml:4:3-71
-MERGED from [org.tensorflow:tensorflow-lite-api:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\e90948bca5822dfb1fcea2701a1e7ce5\transformed\jetified-tensorflow-lite-api-2.14.0\AndroidManifest.xml:6:5-7:38
-MERGED from [org.tensorflow:tensorflow-lite-api:2.14.0] C:\Users\PC\.gradle\caches\8.13\transforms\e90948bca5822dfb1fcea2701a1e7ce5\transformed\jetified-tensorflow-lite-api-2.14.0\AndroidManifest.xml:6:5-7:38
+MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\8bb02dd741ee9335e851faaa65464d86\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:6:5-7:38
+MERGED from [org.tensorflow:tensorflow-lite-api:2.16.1] C:\Users\PC\.gradle\caches\8.13\transforms\8bb02dd741ee9335e851faaa65464d86\transformed\jetified-tensorflow-lite-api-2.16.1\AndroidManifest.xml:6:5-7:38
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\PC\.gradle\caches\8.13\transforms\add62b5f6f8331731990e5c5d86da0ca\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.odml:image:1.0.0-beta1] C:\Users\PC\.gradle\caches\8.13\transforms\add62b5f6f8331731990e5c5d86da0ca\transformed\jetified-image-1.0.0-beta1\AndroidManifest.xml:5:5-44
 	android:targetSdkVersion

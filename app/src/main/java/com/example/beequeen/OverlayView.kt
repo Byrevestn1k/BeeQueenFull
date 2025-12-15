@@ -6,60 +6,60 @@ import android.util.AttributeSet
 import android.view.View
 
 class OverlayView @JvmOverloads constructor(
-    context: Context,
-    attrs: AttributeSet? = null
+    context: Context, attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
     private var results: List<DetectorHelper.DetectionResult> = emptyList()
-    private var srcWidth = 0
-    private var srcHeight = 0
+    private var srcW = 0
+    private var srcH = 0
 
-    private val boxPaint = Paint().apply {
-        color = Color.RED
-        style = Paint.Style.STROKE
-        strokeWidth = 6f
-        isAntiAlias = true
-    }
-
-    private val textPaint = Paint().apply {
-        color = Color.WHITE
-        textSize = 40f
-        style = Paint.Style.FILL
-        setShadowLayer(4f, 2f, 2f, Color.BLACK)
-    }
+    private val enabledClasses = mutableSetOf<String>()
+    private val classColors = mutableMapOf<String, Int>()
 
     fun setFrameInfo(w: Int, h: Int) {
-        srcWidth = w
-        srcHeight = h
+        srcW = w
+        srcH = h
     }
 
-    fun setResults(results: List<DetectorHelper.DetectionResult>) {
-        this.results = results
+    fun setResults(r: List<DetectorHelper.DetectionResult>) {
+        results = r
+        invalidate()
+    }
+
+    fun setClassEnabled(label: String, enabled: Boolean) {
+        if (enabled) enabledClasses += label else enabledClasses -= label
+        invalidate()
+    }
+
+    fun setClassColor(label: String, color: Int) {
+        classColors[label] = color
         invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        if (srcW == 0 || srcH == 0) return
 
-        if (srcWidth == 0 || srcHeight == 0) return
-        if (results.isEmpty()) return
-
-        val viewW = width.toFloat()
-        val viewH = height.toFloat()
-
-        val scaleX = viewW / srcWidth
-        val scaleY = viewH / srcHeight
+        val sx = width.toFloat() / srcW
+        val sy = height.toFloat() / srcH
 
         for (r in results) {
-            val left   = r.box.left   * scaleX
-            val top    = r.box.top    * scaleY
-            val right  = r.box.right  * scaleX
-            val bottom = r.box.bottom * scaleY
+            if (!enabledClasses.contains(r.label)) continue
 
-            canvas.drawRect(left, top, right, bottom, boxPaint)
+            val paint = Paint().apply {
+                color = classColors[r.label] ?: Color.WHITE
+                style = Paint.Style.STROKE
+                strokeWidth = 6f
+                isAntiAlias = true
+            }
 
-            val label = "${r.label} ${(r.score * 100).toInt()}%"
-            canvas.drawText(label, left, top - 10f, textPaint)
+            canvas.drawRect(
+                r.box.left * sx,
+                r.box.top * sy,
+                r.box.right * sx,
+                r.box.bottom * sy,
+                paint
+            )
         }
     }
 }

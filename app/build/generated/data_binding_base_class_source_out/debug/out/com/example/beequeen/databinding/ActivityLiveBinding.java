@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
+import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.camera.view.PreviewView;
@@ -13,7 +13,6 @@ import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
 import com.example.beequeen.OverlayView;
 import com.example.beequeen.R;
-import com.example.beequeen.VerticalSeekBar;
 import java.lang.NullPointerException;
 import java.lang.Override;
 import java.lang.String;
@@ -23,32 +22,19 @@ public final class ActivityLiveBinding implements ViewBinding {
   private final FrameLayout rootView;
 
   @NonNull
-  public final TextView maxText;
-
-  @NonNull
-  public final TextView minText;
+  public final ImageButton btnMenu;
 
   @NonNull
   public final OverlayView overlay;
 
   @NonNull
-  public final TextView percentText;
-
-  @NonNull
-  public final VerticalSeekBar seekBarVertical;
-
-  @NonNull
   public final PreviewView viewFinder;
 
-  private ActivityLiveBinding(@NonNull FrameLayout rootView, @NonNull TextView maxText,
-      @NonNull TextView minText, @NonNull OverlayView overlay, @NonNull TextView percentText,
-      @NonNull VerticalSeekBar seekBarVertical, @NonNull PreviewView viewFinder) {
+  private ActivityLiveBinding(@NonNull FrameLayout rootView, @NonNull ImageButton btnMenu,
+      @NonNull OverlayView overlay, @NonNull PreviewView viewFinder) {
     this.rootView = rootView;
-    this.maxText = maxText;
-    this.minText = minText;
+    this.btnMenu = btnMenu;
     this.overlay = overlay;
-    this.percentText = percentText;
-    this.seekBarVertical = seekBarVertical;
     this.viewFinder = viewFinder;
   }
 
@@ -79,15 +65,9 @@ public final class ActivityLiveBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.maxText;
-      TextView maxText = ViewBindings.findChildViewById(rootView, id);
-      if (maxText == null) {
-        break missingId;
-      }
-
-      id = R.id.minText;
-      TextView minText = ViewBindings.findChildViewById(rootView, id);
-      if (minText == null) {
+      id = R.id.btnMenu;
+      ImageButton btnMenu = ViewBindings.findChildViewById(rootView, id);
+      if (btnMenu == null) {
         break missingId;
       }
 
@@ -97,26 +77,13 @@ public final class ActivityLiveBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.percentText;
-      TextView percentText = ViewBindings.findChildViewById(rootView, id);
-      if (percentText == null) {
-        break missingId;
-      }
-
-      id = R.id.seekBarVertical;
-      VerticalSeekBar seekBarVertical = ViewBindings.findChildViewById(rootView, id);
-      if (seekBarVertical == null) {
-        break missingId;
-      }
-
       id = R.id.viewFinder;
       PreviewView viewFinder = ViewBindings.findChildViewById(rootView, id);
       if (viewFinder == null) {
         break missingId;
       }
 
-      return new ActivityLiveBinding((FrameLayout) rootView, maxText, minText, overlay, percentText,
-          seekBarVertical, viewFinder);
+      return new ActivityLiveBinding((FrameLayout) rootView, btnMenu, overlay, viewFinder);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

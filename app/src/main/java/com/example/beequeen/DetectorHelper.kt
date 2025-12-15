@@ -3,35 +3,116 @@ package com.example.beequeen
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.RectF
-import android.util.Log
 import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.channels.FileChannel
+import kotlin.math.max
+import kotlin.math.min
 
 class DetectorHelper(
     context: Context,
     modelPath: String = "best_meta.tflite"
 ) {
 
-    companion object {
-        private const val TAG = "YOLO"
+    private val inputSize = 640
+    private val numPreds = 8400
+    private val numChannels = 8
+    private val classNames = listOf("beequeen", "drone", "mark_queen", "workbee")
+
+    private val tflite =
+        Interpreter(loadModelFile(context, modelPath))
+
+    /** ПОРОГИ, КЕРОВАНІ З UI */
+    private val classThresholds = mutableMapOf<String, Float>().apply {
+        put("beequeen", 0.25f)
+        put("mark_queen", 0.25f)
+        put("workbee", 0.50f)
+        put("drone", 0.50f)
     }
 
-    private val tflite: Interpreter
+    fun setThreshold(label: String, value01: Float) {
+        classThresholds[label] = value01
+    }
 
-    private val inputSize = 640
-    private val numChannels = 8   // 4 bbox + 4 class scores
-    private val numPreds = 8400
+    fun getClassNames(): List<String> = classNames
 
-    private val classNames = listOf(
-        "beequeen",
-        "drone",
-        "mark_queen",
-        "workbee"
+    data class DetectionResult(
+        val label: String,
+        val score: Float,
+        val box: RectF
     )
 
-    init {
-        tflite = Interpreter(loadModelFile(context, modelPath))
+    fun detect(bitmap: Bitmap): List<DetectionResult> {
+
+        val input = Array(1) { Array(inputSize) { Array(inputSize) { FloatArray(3) } } }
+        val resized = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true)
+
+        for (y in 0 until inputSize)
+            for (x in 0 until inputSize) {
+                val p = resized.getPixel(x, y)
+                input[0][y][x][0] = ((p shr 16) and 0xFF) / 255f
+                input[0][y][x][1] = ((p shr 8) and 0xFF) / 255f
+                input[0][y][x][2] = (p and 0xFF) / 255f
+            }
+
+        val output = Array(1) { Array(numChannels) { FloatArray(numPreds) } }
+        tflite.run(input, output)
+
+        val w = bitmap.width.toFloat()
+        val h = bitmap.height.toFloat()
+
+        val candidates = mutableListOf<DetectionResult>()
+
+        for (i in 0 until numPreds) {
+            var bestScore = 0f
+            var bestClass = -1
+            for (c in 0 until 4) {
+                val s = output[0][4 + c][i]
+                if (s > bestScore) {
+                    bestScore = s
+                    bestClass = c
+                }
+            }
+            if (bestClass < 0) continue
+
+            val label = classNames[bestClass]
+            val thresh = classThresholds[label] ?: 0.5f
+            if (bestScore < thresh) continue
+
+            val cx = output[0][0][i]
+            val cy = output[0][1][i]
+            val bw = output[0][2][i]
+            val bh = output[0][3][i]
+
+            val box = RectF(
+                (cx - bw / 2) * w,
+                (cy - bh / 2) * h,
+                (cx + bw / 2) * w,
+                (cy + bh / 2) * h
+            )
+
+            candidates += DetectionResult(label, bestScore, box)
+        }
+
+        return nms(candidates, 0.45f)
+    }
+
+    private fun nms(src: List<DetectionResult>, iouThresh: Float): List<DetectionResult> {
+        val out = mutableListOf<DetectionResult>()
+        src.sortedByDescending { it.score }.forEach { c ->
+            if (out.none { iou(it.box, c.box) > iouThresh }) out += c
+        }
+        return out
+    }
+
+    private fun iou(a: RectF, b: RectF): Float {
+        val l = max(a.left, b.left)
+        val t = max(a.top, b.top)
+        val r = min(a.right, b.right)
+        val bt = min(a.bottom, b.bottom)
+        val inter = max(0f, r - l) * max(0f, bt - t)
+        val union = a.width() * a.height() + b.width() * b.height() - inter
+        return if (union > 0f) inter / union else 0f
     }
 
     private fun loadModelFile(context: Context, path: String) =
@@ -42,125 +123,4 @@ class DetectorHelper(
                 fd.declaredLength
             )
         }
-
-    data class DetectionResult(
-        val label: String,
-        val score: Float,
-        val box: RectF
-    )
-
-    fun detect(
-        bitmap: Bitmap,
-        confThresh: Float = 0.35f,
-        iouThresh: Float = 0.45f
-    ): List<DetectionResult> {
-
-        Log.d(TAG, "detect start, bitmap ${bitmap.width}x${bitmap.height}")
-
-        val wOrig = bitmap.width.toFloat()
-        val hOrig = bitmap.height.toFloat()
-
-        // ===== Input tensor =====
-        val input = Array(1) {
-            Array(inputSize) {
-                Array(inputSize) {
-                    FloatArray(3)
-                }
-            }
-        }
-
-        val resized = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true)
-
-        for (y in 0 until inputSize) {
-            for (x in 0 until inputSize) {
-                val px = resized.getPixel(x, y)
-                input[0][y][x][0] = ((px shr 16) and 0xFF) / 255f
-                input[0][y][x][1] = ((px shr 8) and 0xFF) / 255f
-                input[0][y][x][2] = (px and 0xFF) / 255f
-            }
-        }
-
-        val output = Array(1) {
-            Array(numChannels) {
-                FloatArray(numPreds)
-            }
-        }
-
-        tflite.run(input, output)
-        Log.d(TAG, "inference finished")
-
-        val candidates = mutableListOf<DetectionResult>()
-
-        for (i in 0 until numPreds) {
-
-            var bestScore = 0f
-            var bestClass = -1
-
-            for (c in 0 until 4) {
-                val score = output[0][4 + c][i]
-                if (score > bestScore) {
-                    bestScore = score
-                    bestClass = c
-                }
-            }
-
-            if (bestScore < confThresh) continue
-
-            // 🔑 YOLO NORMALIZED COORDS (0..1)
-            val cx = output[0][0][i]
-            val cy = output[0][1][i]
-            val w = output[0][2][i]
-            val h = output[0][3][i]
-
-            val left   = (cx - w / 2f) * wOrig
-            val top    = (cy - h / 2f) * hOrig
-            val right  = (cx + w / 2f) * wOrig
-            val bottom = (cy + h / 2f) * hOrig
-
-            val box = RectF(
-                left.coerceIn(0f, wOrig),
-                top.coerceIn(0f, hOrig),
-                right.coerceIn(0f, wOrig),
-                bottom.coerceIn(0f, hOrig)
-            )
-
-            Log.d(TAG, "raw box $i: score=$bestScore px=$box")
-
-            candidates += DetectionResult(
-                classNames[bestClass],
-                bestScore,
-                box
-            )
-        }
-
-        // ===== NMS =====
-        val results = mutableListOf<DetectionResult>()
-        candidates.sortByDescending { it.score }
-
-        for (det in candidates) {
-            if (results.any { iou(det.box, it.box) > iouThresh }) continue
-            results += det
-        }
-
-        Log.d(TAG, "final boxes: ${results.size}")
-        return results
-    }
-
-    private fun iou(a: RectF, b: RectF): Float {
-        val interLeft = maxOf(a.left, b.left)
-        val interTop = maxOf(a.top, b.top)
-        val interRight = minOf(a.right, b.right)
-        val interBottom = minOf(a.bottom, b.bottom)
-
-        val interArea =
-            maxOf(0f, interRight - interLeft) *
-                    maxOf(0f, interBottom - interTop)
-
-        val unionArea =
-            a.width() * a.height() +
-                    b.width() * b.height() -
-                    interArea
-
-        return if (unionArea > 0f) interArea / unionArea else 0f
-    }
 }
