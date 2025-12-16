@@ -87,9 +87,11 @@
     <SeekBar
         android:id="@+id/seekColor"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:max="360"
-        android:splitTrack="false" />
+        android:splitTrack="false"
+        android:thumb="@drawable/gradient_thumb"
+        android:thumbOffset="0dp" />
 
     <!-- Divider -->
     <View

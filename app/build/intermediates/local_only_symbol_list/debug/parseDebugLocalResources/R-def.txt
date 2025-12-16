@@ -1,6 +1,7 @@
 R_DEF: Internal format may change without notice
 local
 drawable bg_color_preview
+drawable gradient_thumb
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable seekbar_track

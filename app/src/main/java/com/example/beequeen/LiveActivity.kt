@@ -27,6 +27,12 @@ import androidx.core.content.ContextCompat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
 
 @OptIn(ExperimentalGetImage::class) // ✅ фікс для imageProxy.image
 class LiveActivity : AppCompatActivity() {
@@ -242,22 +248,37 @@ class LiveActivity : AppCompatActivity() {
             val h = seekBar.height
             if (w <= 0 || h <= 0) return@post
 
+            // градієнт той самий (0..360), але малюємо його тонкою смугою в центрі
+            val trackHeight = dpToPx(10f).coerceAtMost(h)
+            val top = ((h - trackHeight) / 2f)
+            val bottom = top + trackHeight
+
             val colors = IntArray(361) {
                 Color.HSVToColor(floatArrayOf(it.toFloat(), 1f, 1f))
             }
 
-            val shader = android.graphics.LinearGradient(
+            val shader = LinearGradient(
                 0f, 0f, w.toFloat(), 0f,
                 colors, null,
-                android.graphics.Shader.TileMode.CLAMP
+                Shader.TileMode.CLAMP
             )
 
-            val paint = android.graphics.Paint().apply { this.shader = shader }
-            val bmp = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
-            android.graphics.Canvas(bmp).drawRect(0f, 0f, w.toFloat(), h.toFloat(), paint)
+            val paint = Paint().apply { this.shader = shader }
+            val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            val c = Canvas(bmp)
 
-            seekBar.progressDrawable = android.graphics.drawable.BitmapDrawable(resources, bmp)
+            // прозорий фон (щоб не було "плашки" на всю висоту)
+            c.drawColor(Color.TRANSPARENT)
+
+            // сам трек (тонкий)
+            c.drawRect(0f, top, w.toFloat(), bottom, paint)
+
+            seekBar.progressDrawable = BitmapDrawable(resources, bmp)
         }
+    }
+
+    private fun dpToPx(dp: Float): Int {
+        return (dp * resources.displayMetrics.density + 0.5f).toInt()
     }
 
     private fun getHue(color: Int): Int {
