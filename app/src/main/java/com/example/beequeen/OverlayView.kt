@@ -103,28 +103,48 @@ class OverlayView @JvmOverloads constructor(
         if (imageWidth == 0 || imageHeight == 0) return
 
         val now = System.currentTimeMillis()
-        val hasQueenNow = results.any { it.label == "beequeen" || it.label == "mark_queen" }
 
-        // 1) Якщо матки зараз НЕМА — але є останнє коло і не пройшла 1 секунда:
+        val hasQueenNow = results.any {
+            it.label == "beequeen" || it.label == "mark_queen"
+        }
+
+        // =========================================================
+        // HOLD + FADE-OUT (якщо матка зникла)
+        // =========================================================
         if (!hasQueenNow) {
             val rect = lastQueenCircleRect
             val radius = lastQueenCircleRadius
 
-            if (rect != null && radius != null && (now - lastSeenQueenMs) <= queenHoldDurationMs) {
-                queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
-                canvas.drawCircle(rect.centerX(), rect.centerY(), radius, queenPaint)
+            if (rect != null && radius != null) {
+                val elapsed = now - lastSeenQueenMs
 
-                drawLabel(
-                    canvas,
-                    "queen",
-                    lastQueenScore,
-                    rect
-                )
-                return
-            }
+                if (elapsed <= queenHoldDurationMs) {
+                    // fade-out 100% -> 0%
+                    val fadeRatio =
+                        1f - (elapsed.toFloat() / queenHoldDurationMs.toFloat())
+                    val alpha =
+                        (255 * fadeRatio).toInt().coerceIn(0, 255)
 
-            // 2) Якщо час утримання вийшов — тоді вже скидаємо все по матці
-            if (rect != null && (now - lastSeenQueenMs) > queenHoldDurationMs) {
+                    queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
+                    queenPaint.alpha = alpha
+
+                    canvas.drawCircle(
+                        rect.centerX(),
+                        rect.centerY(),
+                        radius,
+                        queenPaint
+                    )
+
+                    drawLabel(
+                        canvas,
+                        "queen",
+                        lastQueenScore,
+                        rect
+                    )
+                    return
+                }
+
+                // час утримання вийшов → повний reset
                 lastQueenCircleRect = null
                 lastQueenCircleRadius = null
                 lastQueenScore = 0f
@@ -132,10 +152,13 @@ class OverlayView @JvmOverloads constructor(
 
                 lastEmaQueenRadius = null
                 queenSmoother.reset()
+                queenPaint.alpha = 255
             }
         }
 
-        // Якщо нема взагалі чого малювати — вихід
+        // =========================================================
+        // ЗВИЧАЙНЕ МАЛЮВАННЯ
+        // =========================================================
         if (results.isEmpty()) return
 
         val scaleX = width.toFloat() / imageWidth
@@ -153,9 +176,12 @@ class OverlayView @JvmOverloads constructor(
                 src.bottom * scaleY
             )
 
-            val isQueen = result.label == "beequeen" || result.label == "mark_queen"
+            val isQueen =
+                result.label == "beequeen" || result.label == "mark_queen"
 
             if (isQueen) {
+                // перед нормальним малюванням — 100% alpha
+                queenPaint.alpha = 255
                 drawQueenCircle(canvas, rect, result.score, result.label)
             } else {
                 val paint = otherPaint.apply {
@@ -167,6 +193,7 @@ class OverlayView @JvmOverloads constructor(
         }
     }
 
+
     // ---------- QUEEN AS CIRCLE ----------
     private fun drawQueenCircle(
         canvas: Canvas,
@@ -174,41 +201,45 @@ class OverlayView @JvmOverloads constructor(
         score: Float,
         label: String
     ) {
-        // EMA по прямокутнику (центр/розміри)
+        // 1) EMA по прямокутнику (центр / розміри)
         val smoothRect = queenSmoother.smooth(rect)
 
-        // центр прямокутника (перетин діагоналей)
+        // 2) центр (перетин діагоналей)
         val cx = smoothRect.centerX()
         val cy = smoothRect.centerY()
 
-        // діагональ
+        // 3) діагональ прямокутника
         val diag = hypot(
             smoothRect.width().toDouble(),
             smoothRect.height().toDouble()
         ).toFloat()
 
-        // базове правило: діаметр = діагональ * 3 => radius = diag * 1.5
+        // 4) базове правило: діаметр = діагональ * 3
         var radius = (diag * 3f) / 2f
 
-        // якщо це mark_queen (мітка) — радіус ще збільшуємо
+        // 5) якщо це mark_queen (мітка) — додаткове збільшення
         if (label == "mark_queen") {
             radius *= markedQueenRadiusMultiplier
         }
 
-        // EMA по радіусу (щоб не "дихало")
+        // 6) EMA для радіуса (щоб не "дихало")
         radius = smoothRadius(radius)
 
-        // матка завжди одного кольору (beequeen)
+        // 7) матка завжди одного кольору
         queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
+        queenPaint.alpha = 255
 
+        // 8) малюємо коло
         canvas.drawCircle(cx, cy, radius, queenPaint)
 
-        // запамʼятовуємо останню матку для hold-режиму
+        // 9) зберігаємо стан для hold-режиму
         lastQueenCircleRadius = radius
-        lastQueenCircleRect = RectF(cx - radius, cy - radius, cx + radius, cy + radius)
+        lastQueenCircleRect =
+            RectF(cx - radius, cy - radius, cx + radius, cy + radius)
         lastQueenScore = score
         lastSeenQueenMs = System.currentTimeMillis()
 
+        // 10) підпис
         drawLabel(
             canvas,
             "queen",
@@ -216,6 +247,7 @@ class OverlayView @JvmOverloads constructor(
             lastQueenCircleRect!!
         )
     }
+
 
     private fun smoothRadius(current: Float): Float {
         val prev = lastEmaQueenRadius

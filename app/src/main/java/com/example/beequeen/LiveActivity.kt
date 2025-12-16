@@ -56,6 +56,10 @@ class LiveActivity : AppCompatActivity() {
         MarkerConfig("drone", "Трутні", Color.RED, 50)
     )
 
+    // ---- FPS control / throttling ----
+    private var lastDetectMs: Long = 0L
+    private val MIN_DETECT_INTERVAL_MS = 120L  // 100..150 мс; 120 — хороший старт
+
     private lateinit var detector: DetectorHelper
     private lateinit var overlay: OverlayView
     private lateinit var cameraExecutor: ExecutorService
@@ -136,6 +140,15 @@ class LiveActivity : AppCompatActivity() {
     }
 
     private fun processFrame(imageProxy: ImageProxy) {
+        val now = System.currentTimeMillis()
+
+        // ✅ детектимо не частіше, ніж раз на MIN_DETECT_INTERVAL_MS
+        if (now - lastDetectMs < MIN_DETECT_INTERVAL_MS) {
+            imageProxy.close()
+            return
+        }
+        lastDetectMs = now
+
         try {
             val img = imageProxy.image
             if (img != null) {
@@ -144,33 +157,22 @@ class LiveActivity : AppCompatActivity() {
                     imageProxy.imageInfo.rotationDegrees
                 )
 
-
-// ✅ залишаємо тільки одну матку (top-1 по score)
                 val results = detector.detect(bitmap)
 
-// ✅ beequeen + mark_queen = одна матка
+                // ✅ beequeen + mark_queen = одна матка (top-1 по score)
                 val queen = results
                     .filter { it.label == "beequeen" || it.label == "mark_queen" }
                     .maxByOrNull { it.score }
 
                 val filtered = buildList {
-                    // додаємо ТІЛЬКИ одну матку
                     queen?.let { add(it) }
-
-                    // всі інші класи — без змін
-                    addAll(
-                        results.filter {
-                            it.label != "beequeen" && it.label != "mark_queen"
-                        }
-                    )
+                    addAll(results.filter { it.label != "beequeen" && it.label != "mark_queen" })
                 }
-
 
                 runOnUiThread {
                     overlay.setFrameInfo(bitmap.width, bitmap.height)
                     overlay.setResults(filtered)
                 }
-
             }
         } catch (e: Exception) {
             Log.e("LiveActivity", "processFrame error", e)
@@ -178,6 +180,7 @@ class LiveActivity : AppCompatActivity() {
             imageProxy.close()
         }
     }
+
 
     // ---------- SETTINGS DIALOG ----------
     private fun showSettingsDialog() {
