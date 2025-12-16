@@ -51,7 +51,7 @@ class LiveActivity : AppCompatActivity() {
     // ---------- MARKERS ----------
     private val markers = mutableListOf(
         MarkerConfig("beequeen", "Матка", Color.MAGENTA, 25),
-        MarkerConfig("mark_queen", "Маркерована матка", Color.CYAN, 25),
+        MarkerConfig("mark_queen", "Маркерована матка", Color.MAGENTA, 25),
         MarkerConfig("workbee", "Робочі бджоли", Color.parseColor("#66FF66"), 50),
         MarkerConfig("drone", "Трутні", Color.RED, 50)
     )
@@ -144,12 +144,33 @@ class LiveActivity : AppCompatActivity() {
                     imageProxy.imageInfo.rotationDegrees
                 )
 
+
+// ✅ залишаємо тільки одну матку (top-1 по score)
                 val results = detector.detect(bitmap)
+
+// ✅ beequeen + mark_queen = одна матка
+                val queen = results
+                    .filter { it.label == "beequeen" || it.label == "mark_queen" }
+                    .maxByOrNull { it.score }
+
+                val filtered = buildList {
+                    // додаємо ТІЛЬКИ одну матку
+                    queen?.let { add(it) }
+
+                    // всі інші класи — без змін
+                    addAll(
+                        results.filter {
+                            it.label != "beequeen" && it.label != "mark_queen"
+                        }
+                    )
+                }
+
 
                 runOnUiThread {
                     overlay.setFrameInfo(bitmap.width, bitmap.height)
-                    overlay.setResults(results)
+                    overlay.setResults(filtered)
                 }
+
             }
         } catch (e: Exception) {
             Log.e("LiveActivity", "processFrame error", e)
@@ -174,8 +195,15 @@ class LiveActivity : AppCompatActivity() {
             val seekThr = row.findViewById<SeekBar>(R.id.seekThreshold)
             val seekCol = row.findViewById<SeekBar>(R.id.seekColor)
             val colorPreview = row.findViewById<View>(R.id.viewColorPreview)
+            val isMarkQueen = marker.id == "mark_queen"
 
             tvTitle.text = marker.title
+            if (isMarkQueen) {
+                // для маркованої матки: колір НЕ налаштовується
+                seekCol.visibility = View.GONE
+                colorPreview.visibility = View.GONE
+            }
+
             cb.isChecked = marker.enabled
 
             // ✅ preview
@@ -216,21 +244,24 @@ class LiveActivity : AppCompatActivity() {
             })
 
             // COLOR (HSV)
-            applyHsvGradient(seekCol)
-            seekCol.progress = getHue(marker.color)
+            if (!isMarkQueen) {
+                applyHsvGradient(seekCol)
+                seekCol.progress = getHue(marker.color)
 
-            seekCol.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(sb: SeekBar?, p: Int, f: Boolean) {
-                    val hue = p.coerceIn(0, 360)
-                    val color = Color.HSVToColor(floatArrayOf(hue.toFloat(), 1f, 1f))
-                    marker.color = color
-                    colorPreview.setBackgroundColor(color)
-                    overlay.setClassColor(marker.id, color)
-                    prefs.edit().putInt("${marker.id}_color", color).apply()
-                }
-                override fun onStartTrackingTouch(sb: SeekBar?) {}
-                override fun onStopTrackingTouch(sb: SeekBar?) {}
-            })
+                seekCol.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                    override fun onProgressChanged(sb: SeekBar?, p: Int, f: Boolean) {
+                        val hue = p.coerceIn(0, 360)
+                        val color = Color.HSVToColor(floatArrayOf(hue.toFloat(), 1f, 1f))
+                        marker.color = color
+                        colorPreview.setBackgroundColor(color)
+                        overlay.setClassColor(marker.id, color)
+                        prefs.edit().putInt("${marker.id}_color", color).apply()
+                    }
+                    override fun onStartTrackingTouch(sb: SeekBar?) {}
+                    override fun onStopTrackingTouch(sb: SeekBar?) {}
+                })
+            }
+
 
             container.addView(row)
         }
