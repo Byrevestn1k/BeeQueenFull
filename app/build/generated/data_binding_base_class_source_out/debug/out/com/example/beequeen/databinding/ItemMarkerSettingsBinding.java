@@ -22,13 +22,16 @@ public final class ItemMarkerSettingsBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
-  public final CheckBox cbEnabled;
+  public final CheckBox checkEnabled;
 
   @NonNull
   public final SeekBar seekColor;
 
   @NonNull
   public final SeekBar seekThreshold;
+
+  @NonNull
+  public final TextView tvColorLabel;
 
   @NonNull
   public final TextView tvConfidence;
@@ -39,13 +42,14 @@ public final class ItemMarkerSettingsBinding implements ViewBinding {
   @NonNull
   public final View viewColorPreview;
 
-  private ItemMarkerSettingsBinding(@NonNull LinearLayout rootView, @NonNull CheckBox cbEnabled,
-      @NonNull SeekBar seekColor, @NonNull SeekBar seekThreshold, @NonNull TextView tvConfidence,
-      @NonNull TextView tvTitle, @NonNull View viewColorPreview) {
+  private ItemMarkerSettingsBinding(@NonNull LinearLayout rootView, @NonNull CheckBox checkEnabled,
+      @NonNull SeekBar seekColor, @NonNull SeekBar seekThreshold, @NonNull TextView tvColorLabel,
+      @NonNull TextView tvConfidence, @NonNull TextView tvTitle, @NonNull View viewColorPreview) {
     this.rootView = rootView;
-    this.cbEnabled = cbEnabled;
+    this.checkEnabled = checkEnabled;
     this.seekColor = seekColor;
     this.seekThreshold = seekThreshold;
+    this.tvColorLabel = tvColorLabel;
     this.tvConfidence = tvConfidence;
     this.tvTitle = tvTitle;
     this.viewColorPreview = viewColorPreview;
@@ -78,9 +82,9 @@ public final class ItemMarkerSettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
-      id = R.id.cbEnabled;
-      CheckBox cbEnabled = ViewBindings.findChildViewById(rootView, id);
-      if (cbEnabled == null) {
+      id = R.id.checkEnabled;
+      CheckBox checkEnabled = ViewBindings.findChildViewById(rootView, id);
+      if (checkEnabled == null) {
         break missingId;
       }
 
@@ -93,6 +97,12 @@ public final class ItemMarkerSettingsBinding implements ViewBinding {
       id = R.id.seekThreshold;
       SeekBar seekThreshold = ViewBindings.findChildViewById(rootView, id);
       if (seekThreshold == null) {
+        break missingId;
+      }
+
+      id = R.id.tvColorLabel;
+      TextView tvColorLabel = ViewBindings.findChildViewById(rootView, id);
+      if (tvColorLabel == null) {
         break missingId;
       }
 
@@ -114,8 +124,8 @@ public final class ItemMarkerSettingsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemMarkerSettingsBinding((LinearLayout) rootView, cbEnabled, seekColor,
-          seekThreshold, tvConfidence, tvTitle, viewColorPreview);
+      return new ItemMarkerSettingsBinding((LinearLayout) rootView, checkEnabled, seekColor,
+          seekThreshold, tvColorLabel, tvConfidence, tvTitle, viewColorPreview);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

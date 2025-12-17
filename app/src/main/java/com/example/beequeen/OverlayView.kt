@@ -12,10 +12,22 @@ class OverlayView @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : View(context, attrs) {
 
-    // ---------- paints ----------
+    companion object {
+        private const val PREFS_NAME = "beequeen_prefs"
+        private const val KEY_STICKY_QUEEN = "sticky_queen"
+    }
+
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    private fun stickyEnabled(): Boolean =
+        prefs.getBoolean(KEY_STICKY_QUEEN, false)
+
+    // ===============================
+    // Paints
+    // ===============================
     private val queenPaint = Paint().apply {
         style = Paint.Style.STROKE
-        strokeWidth = 6f
+        strokeWidth = 8f
         color = Color.MAGENTA
         isAntiAlias = true
     }
@@ -30,50 +42,49 @@ class OverlayView @JvmOverloads constructor(
     private val textPaint = Paint().apply {
         color = Color.WHITE
         textSize = 42f
-        style = Paint.Style.FILL
         isAntiAlias = true
     }
 
     private val textBgPaint = Paint().apply {
         color = Color.BLACK
-        style = Paint.Style.FILL
         alpha = 160
     }
 
-    // ---------- state ----------
+    // ===============================
+    // State
+    // ===============================
     private var results: List<DetectorHelper.DetectionResult> = emptyList()
-
     private var imageWidth = 0
     private var imageHeight = 0
 
     private val enabledClasses = mutableMapOf<String, Boolean>()
     private val classColors = mutableMapOf<String, Int>()
 
-    // EMA по прямокутнику тільки для матки
     private val queenSmoother = QueenEmaSmoother()
 
-    // ✅ EMA окремо для радіуса кола
-    private var lastEmaQueenRadius: Float? = null
+    private var lastEmaRadius: Float? = null
     private val radiusAlpha = 0.18f
-    private val radiusMaxJumpRatio = 0.60f
-
-    // Множник для mark_queen (бо бокс мітки значно менший за тіло матки)
+    private val radiusMaxJumpRatio = 0.6f
     private val markedQueenRadiusMultiplier = 3.5f
 
-    // ✅ Hold last queen circle (1 сек)
     private val queenHoldDurationMs = 1000L
-    private var lastQueenCircleRect: RectF? = null
-    private var lastQueenCircleRadius: Float? = null
-    private var lastQueenScore: Float = 0f
-    private var lastSeenQueenMs: Long = 0L
+    private var lastQueenRect: RectF? = null
+    private var lastQueenRadius: Float? = null
+    private var lastQueenScore = 0f
+    private var lastSeenMs = 0L
 
-    // =========================================================
-    // === API, ЯКИЙ ЧЕКАЄ LiveActivity (НЕ МІНЯЄМО!) ===========
-    // =========================================================
+    // Sticky tracking state
+    private var lastStickyEnabled = false
+    private var locked = false
+    private var lastQueenCx: Float? = null
+    private var lastQueenCy: Float? = null
 
-    fun setFrameInfo(imageWidth: Int, imageHeight: Int) {
-        this.imageWidth = imageWidth
-        this.imageHeight = imageHeight
+    // ===============================
+    // API (НЕ МІНЯЄМО)
+    // ===============================
+    fun setFrameInfo(w: Int, h: Int) {
+        imageWidth = w
+        imageHeight = h
     }
 
     fun setClassEnabled(label: String, enabled: Boolean) {
@@ -86,216 +97,188 @@ class OverlayView @JvmOverloads constructor(
         invalidate()
     }
 
-    fun setResults(detectionResults: List<DetectorHelper.DetectionResult>) {
-        this.results = detectionResults
-
-        // ❗ ВАЖЛИВО:
-        // Якщо матка зникла — НЕ скидаємо EMA одразу.
-        // Hold/Reset вирішуємо в onDraw() по таймеру.
+    fun setResults(r: List<DetectorHelper.DetectionResult>) {
+        results = r
         invalidate()
     }
 
-    // =========================================================
-
+    // ===============================
+    // Draw
+    // ===============================
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
         if (imageWidth == 0 || imageHeight == 0) return
 
         val now = System.currentTimeMillis()
+        val sticky = stickyEnabled()
 
-        val hasQueenNow = results.any {
-            it.label == "beequeen" || it.label == "mark_queen"
+        // якщо sticky вимкнули — скидаємо lock
+        if (lastStickyEnabled && !sticky) {
+            clearLock()
+        }
+        lastStickyEnabled = sticky
+
+        if (results.isEmpty()) {
+            // якщо детекцій нема, але є last queen — відмалюємо hold/fade (v1.5)
+            drawHoldFadeIfNeeded(canvas, now, sticky)
+            return
         }
 
-        // =========================================================
-        // HOLD + FADE-OUT (якщо матка зникла)
-        // =========================================================
-        if (!hasQueenNow) {
-            val rect = lastQueenCircleRect
-            val radius = lastQueenCircleRadius
+        val sx = width.toFloat() / imageWidth
+        val sy = height.toFloat() / imageHeight
 
-            if (rect != null && radius != null) {
-                val elapsed = now - lastSeenQueenMs
+        val queens = ArrayList<Pair<DetectorHelper.DetectionResult, RectF>>()
+        val others = ArrayList<Pair<DetectorHelper.DetectionResult, RectF>>()
 
-                if (elapsed <= queenHoldDurationMs) {
-                    // fade-out 100% -> 0%
-                    val fadeRatio =
-                        1f - (elapsed.toFloat() / queenHoldDurationMs.toFloat())
-                    val alpha =
-                        (255 * fadeRatio).toInt().coerceIn(0, 255)
+        for (r in results) {
+            if (enabledClasses[r.label] == false) continue
 
-                    queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
-                    queenPaint.alpha = alpha
-
-                    canvas.drawCircle(
-                        rect.centerX(),
-                        rect.centerY(),
-                        radius,
-                        queenPaint
-                    )
-
-                    drawLabel(
-                        canvas,
-                        "queen",
-                        lastQueenScore,
-                        rect
-                    )
-                    return
-                }
-
-                // час утримання вийшов → повний reset
-                lastQueenCircleRect = null
-                lastQueenCircleRadius = null
-                lastQueenScore = 0f
-                lastSeenQueenMs = 0L
-
-                lastEmaQueenRadius = null
-                queenSmoother.reset()
-                queenPaint.alpha = 255
-            }
-        }
-
-        // =========================================================
-        // ЗВИЧАЙНЕ МАЛЮВАННЯ
-        // =========================================================
-        if (results.isEmpty()) return
-
-        val scaleX = width.toFloat() / imageWidth
-        val scaleY = height.toFloat() / imageHeight
-
-        for (result in results) {
-
-            if (enabledClasses[result.label] == false) continue
-
-            val src = result.box
             val rect = RectF(
-                src.left * scaleX,
-                src.top * scaleY,
-                src.right * scaleX,
-                src.bottom * scaleY
+                r.box.left * sx,
+                r.box.top * sy,
+                r.box.right * sx,
+                r.box.bottom * sy
             )
 
-            val isQueen =
-                result.label == "beequeen" || result.label == "mark_queen"
-
-            if (isQueen) {
-                // перед нормальним малюванням — 100% alpha
-                queenPaint.alpha = 255
-                drawQueenCircle(canvas, rect, result.score, result.label)
+            if (r.label == "beequeen" || r.label == "mark_queen") {
+                queens.add(r to rect)
             } else {
-                val paint = otherPaint.apply {
-                    color = classColors[result.label] ?: Color.RED
-                }
-                canvas.drawRect(rect, paint)
-                drawLabel(canvas, result.label, result.score, rect)
+                others.add(r to rect)
             }
         }
-    }
 
-
-    // ---------- QUEEN AS CIRCLE ----------
-    private fun drawQueenCircle(
-        canvas: Canvas,
-        rect: RectF,
-        score: Float,
-        label: String
-    ) {
-        // 1) EMA по прямокутнику (центр / розміри)
-        val smoothRect = queenSmoother.smooth(rect)
-
-        // 2) центр (перетин діагоналей)
-        val cx = smoothRect.centerX()
-        val cy = smoothRect.centerY()
-
-        // 3) діагональ прямокутника
-        val diag = hypot(
-            smoothRect.width().toDouble(),
-            smoothRect.height().toDouble()
-        ).toFloat()
-
-        // 4) базове правило: діаметр = діагональ * 3
-        var radius = (diag * 3f) / 2f
-
-        // 5) якщо це mark_queen (мітка) — додаткове збільшення
-        if (label == "mark_queen") {
-            radius *= markedQueenRadiusMultiplier
+        // спершу малюємо НЕ-матку
+        for ((r, rect) in others) {
+            otherPaint.color = classColors[r.label] ?: Color.RED
+            canvas.drawRect(rect, otherPaint)
+            drawLabel(canvas, r.label, r.score, rect)
         }
 
-        // 6) EMA для радіуса (щоб не "дихало")
+        // далі — матка (тільки ОДНА)
+        val selected = selectQueen(queens, sticky)
+        if (selected == null) {
+            drawHoldFadeIfNeeded(canvas, now, sticky)
+            return
+        }
+
+        val (qr, qrect) = selected
+        drawQueen(canvas, qrect, qr.score, qr.label)
+    }
+
+    private fun selectQueen(
+        queens: List<Pair<DetectorHelper.DetectionResult, RectF>>,
+        sticky: Boolean
+    ): Pair<DetectorHelper.DetectionResult, RectF>? {
+        if (queens.isEmpty()) return null
+
+        // Sticky OFF → як v1.5: top-1 queen
+        if (!sticky) {
+            return queens.maxByOrNull { it.first.score }
+        }
+
+        // Sticky ON:
+        // 1) якщо ще не locked — lock на top-1
+        if (!locked || lastQueenCx == null || lastQueenCy == null) {
+            val top = queens.maxByOrNull { it.first.score } ?: return null
+            locked = true
+            return top
+        }
+
+        // 2) якщо locked — беремо найближчу матку до попереднього центру
+        val cx = lastQueenCx!!
+        val cy = lastQueenCy!!
+
+        return queens.minByOrNull { (_, rect) ->
+            val dx = rect.centerX() - cx
+            val dy = rect.centerY() - cy
+            dx * dx + dy * dy
+        }
+    }
+
+    private fun drawHoldFadeIfNeeded(canvas: Canvas, now: Long, sticky: Boolean) {
+        if (lastQueenRect == null || lastQueenRadius == null) return
+
+        val elapsed = now - lastSeenMs
+        if (elapsed <= queenHoldDurationMs) {
+            val alpha = ((1f - elapsed.toFloat() / queenHoldDurationMs) * 255)
+                .toInt().coerceIn(0, 255)
+            queenPaint.alpha = alpha
+
+            canvas.drawCircle(
+                lastQueenRect!!.centerX(),
+                lastQueenRect!!.centerY(),
+                lastQueenRadius!!,
+                queenPaint
+            )
+            drawLabel(canvas, "queen", lastQueenScore, lastQueenRect!!)
+        } else {
+            resetQueen()
+            if (sticky) clearLock()
+        }
+    }
+
+    private fun drawQueen(canvas: Canvas, rect: RectF, score: Float, label: String) {
+        val smooth = queenSmoother.smooth(rect)
+        val cx = smooth.centerX()
+        val cy = smooth.centerY()
+
+        val diag = hypot(smooth.width(), smooth.height())
+        var radius = (diag * 3f) / 2f
+        if (label == "mark_queen") radius *= markedQueenRadiusMultiplier
         radius = smoothRadius(radius)
 
-        // 7) матка завжди одного кольору
-        queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
         queenPaint.alpha = 255
-
-        // 8) малюємо коло
+        queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
         canvas.drawCircle(cx, cy, radius, queenPaint)
 
-        // 9) зберігаємо стан для hold-режиму
-        lastQueenCircleRadius = radius
-        lastQueenCircleRect =
-            RectF(cx - radius, cy - radius, cx + radius, cy + radius)
+        // оновлюємо “останню матку”
+        lastQueenCx = cx
+        lastQueenCy = cy
+        lastQueenRect = RectF(cx - radius, cy - radius, cx + radius, cy + radius)
+        lastQueenRadius = radius
         lastQueenScore = score
-        lastSeenQueenMs = System.currentTimeMillis()
+        lastSeenMs = System.currentTimeMillis()
 
-        // 10) підпис
-        drawLabel(
-            canvas,
-            "queen",
-            score,
-            lastQueenCircleRect!!
-        )
+        drawLabel(canvas, "queen", score, lastQueenRect!!)
     }
 
-
-    private fun smoothRadius(current: Float): Float {
-        val prev = lastEmaQueenRadius
-        if (prev == null) {
-            lastEmaQueenRadius = current
-            return current
+    private fun smoothRadius(curr: Float): Float {
+        val prev = lastEmaRadius ?: run {
+            lastEmaRadius = curr
+            return curr
         }
-
-        // різкий стрибок — приймаємо як є
-        if (isRadiusTooFar(prev, current)) {
-            lastEmaQueenRadius = current
-            return current
+        val jump = abs(curr - prev) / prev.coerceAtLeast(1f)
+        if (jump > radiusMaxJumpRatio) {
+            lastEmaRadius = curr
+            return curr
         }
-
-        val smoothed = prev * (1f - radiusAlpha) + current * radiusAlpha
-        lastEmaQueenRadius = smoothed
+        val smoothed = prev * (1f - radiusAlpha) + curr * radiusAlpha
+        lastEmaRadius = smoothed
         return smoothed
     }
 
-    private fun isRadiusTooFar(prev: Float, curr: Float): Boolean {
-        val base = prev.coerceAtLeast(1f)
-        val diffRatio = abs(curr - prev) / base
-        return diffRatio > radiusMaxJumpRatio
+    private fun clearLock() {
+        locked = false
+        lastQueenCx = null
+        lastQueenCy = null
     }
 
-    // ---------- LABEL ----------
-    private fun drawLabel(
-        canvas: Canvas,
-        label: String,
-        score: Float,
-        rect: RectF
-    ) {
+    private fun resetQueen() {
+        lastQueenRect = null
+        lastQueenRadius = null
+        lastQueenScore = 0f
+        lastSeenMs = 0L
+        lastEmaRadius = null
+        queenSmoother.reset()
+        queenPaint.alpha = 255
+    }
+
+    private fun drawLabel(canvas: Canvas, label: String, score: Float, rect: RectF) {
         val text = "$label ${(score * 100).toInt()}%"
-
-        val textWidth = textPaint.measureText(text)
-        val textHeight = textPaint.textSize
-
-        val left = rect.left
-        val top = rect.top - textHeight - 8f
-
-        val bgRect = RectF(
-            left,
-            top,
-            left + textWidth + 16f,
-            top + textHeight + 12f
-        )
-
-        canvas.drawRect(bgRect, textBgPaint)
-        canvas.drawText(text, left + 8f, top + textHeight, textPaint)
+        val w = textPaint.measureText(text)
+        val h = textPaint.textSize
+        val bg = RectF(rect.left, rect.top - h - 8, rect.left + w + 16, rect.top + 4)
+        canvas.drawRect(bg, textBgPaint)
+        canvas.drawText(text, rect.left + 8, rect.top - 8, textPaint)
     }
 }

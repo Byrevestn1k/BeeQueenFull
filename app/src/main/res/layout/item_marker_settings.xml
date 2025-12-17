@@ -13,9 +13,11 @@
         android:gravity="center_vertical">
 
         <CheckBox
-            android:id="@+id/cbEnabled"
+            android:id="@+id/checkEnabled"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Увімкнено"
+            android:checked="false"/>
 
         <TextView
             android:id="@+id/tvTitle"
@@ -77,21 +79,29 @@
 
     <!-- Color label -->
     <TextView
+        android:id="@+id/tvColorLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Колір рамки"
         android:textSize="13sp"
         android:layout_marginTop="6dp" />
 
-    <!-- Color seekbar (HSV) -->
-    <SeekBar
-        android:id="@+id/seekColor"
+    <!-- Color seekbar container (тонка лінія + великий thumb) -->
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:max="360"
-        android:splitTrack="false"
-        android:thumb="@drawable/gradient_thumb"
-        android:thumbOffset="0dp" />
+        android:layout_marginTop="4dp">
+
+        <SeekBar
+            android:id="@+id/seekColor"
+            android:layout_width="match_parent"
+            android:layout_height="14dp"
+            android:layout_gravity="center_vertical"
+            android:max="360"
+            android:splitTrack="false"
+            android:thumb="@drawable/gradient_thumb"
+            android:thumbOffset="0dp" />
+    </FrameLayout>
 
     <!-- Divider -->
     <View
@@ -99,4 +109,5 @@
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="#444444" />
+
 </LinearLayout>

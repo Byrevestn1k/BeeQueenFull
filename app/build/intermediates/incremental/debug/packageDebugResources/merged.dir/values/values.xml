@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">BeeQueen</string>
-    <style name="Theme.BeeQueen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#1E88E5</item>
-    </style>
-</resources>

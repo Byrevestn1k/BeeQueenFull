@@ -28,13 +28,17 @@ public final class ActivityLiveBinding implements ViewBinding {
   public final OverlayView overlay;
 
   @NonNull
+  public final FrameLayout root;
+
+  @NonNull
   public final PreviewView viewFinder;
 
   private ActivityLiveBinding(@NonNull FrameLayout rootView, @NonNull ImageButton btnMenu,
-      @NonNull OverlayView overlay, @NonNull PreviewView viewFinder) {
+      @NonNull OverlayView overlay, @NonNull FrameLayout root, @NonNull PreviewView viewFinder) {
     this.rootView = rootView;
     this.btnMenu = btnMenu;
     this.overlay = overlay;
+    this.root = root;
     this.viewFinder = viewFinder;
   }
 
@@ -77,13 +81,15 @@ public final class ActivityLiveBinding implements ViewBinding {
         break missingId;
       }
 
+      FrameLayout root = (FrameLayout) rootView;
+
       id = R.id.viewFinder;
       PreviewView viewFinder = ViewBindings.findChildViewById(rootView, id);
       if (viewFinder == null) {
         break missingId;
       }
 
-      return new ActivityLiveBinding((FrameLayout) rootView, btnMenu, overlay, viewFinder);
+      return new ActivityLiveBinding((FrameLayout) rootView, btnMenu, overlay, root, viewFinder);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

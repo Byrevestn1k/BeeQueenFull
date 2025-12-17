@@ -1,118 +1,122 @@
 [
     {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/ic_launcher_background.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-hdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_gradient_thumb.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\gradient_thumb.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_item_image.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\item_image.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\raw_beep.mp3.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\raw\\beep.mp3"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_activity_settings.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\activity_settings.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-xxxhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_thumb_orange.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/thumb_orange.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\xml_file_paths.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\xml\\file_paths.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-xhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-mdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-hdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_activity_training.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/activity_training.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_seekbar_track.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\seekbar_track.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/xml_file_paths.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/xml/file_paths.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_item_image.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/item_image.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_activity_live.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\activity_live.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_seekbar_track.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/seekbar_track.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_test_bee.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\test_bee.webp"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_thumb_orange.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\thumb_orange.xml"
+    },
+    {
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_dialog_settings.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\dialog_settings.xml"
     },
     {
         "merged": "com.example.beequeen.app-debug-39:/layout_item_marker_settings.xml.flat",
         "source": "com.example.beequeen.app-main-41:/layout/item_marker_settings.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-mdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_dialog_settings.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/dialog_settings.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-xxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/raw_beep.mp3.flat",
-        "source": "com.example.beequeen.app-main-41:/raw/beep.mp3"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_activity_training.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\activity_training.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-xxxhdpi\\ic_launcher.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_item_marker_settings.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\item_marker_settings.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_bg_color_preview.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/bg_color_preview.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_activity_settings.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/activity_settings.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_activity_detector_test.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\activity_detector_test.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_activity_main.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/activity_main.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_bg_color_preview.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\bg_color_preview.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_activity_live.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/activity_live.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/layout_activity_detector_test.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/layout/activity_detector_test.xml"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\drawable_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\drawable\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_gradient_thumb.xml.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/gradient_thumb.xml"
-    },
-    {
-        "merged": "com.example.beequeen.app-debug-39:/drawable_test_bee.webp.flat",
-        "source": "com.example.beequeen.app-main-41:/drawable/test_bee.webp"
+        "merged": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-debug-39:\\mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "C:\\Users\\PC\\.gradle\\daemon\\8.13\\com.example.beequeen.app-main-41:\\mipmap-xxhdpi\\ic_launcher_round.webp"
     }
 ]
