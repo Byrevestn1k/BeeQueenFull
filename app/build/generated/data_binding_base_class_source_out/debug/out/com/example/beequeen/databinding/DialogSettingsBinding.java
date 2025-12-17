@@ -4,8 +4,11 @@ package com.example.beequeen.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewbinding.ViewBinding;
@@ -20,12 +23,25 @@ public final class DialogSettingsBinding implements ViewBinding {
   private final ScrollView rootView;
 
   @NonNull
+  public final CheckBox checkSticky;
+
+  @NonNull
   public final LinearLayout containerMarkers;
 
-  private DialogSettingsBinding(@NonNull ScrollView rootView,
-      @NonNull LinearLayout containerMarkers) {
+  @NonNull
+  public final SeekBar seekSearchHold;
+
+  @NonNull
+  public final TextView tvSearchHoldLabel;
+
+  private DialogSettingsBinding(@NonNull ScrollView rootView, @NonNull CheckBox checkSticky,
+      @NonNull LinearLayout containerMarkers, @NonNull SeekBar seekSearchHold,
+      @NonNull TextView tvSearchHoldLabel) {
     this.rootView = rootView;
+    this.checkSticky = checkSticky;
     this.containerMarkers = containerMarkers;
+    this.seekSearchHold = seekSearchHold;
+    this.tvSearchHoldLabel = tvSearchHoldLabel;
   }
 
   @Override
@@ -55,13 +71,32 @@ public final class DialogSettingsBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.checkSticky;
+      CheckBox checkSticky = ViewBindings.findChildViewById(rootView, id);
+      if (checkSticky == null) {
+        break missingId;
+      }
+
       id = R.id.containerMarkers;
       LinearLayout containerMarkers = ViewBindings.findChildViewById(rootView, id);
       if (containerMarkers == null) {
         break missingId;
       }
 
-      return new DialogSettingsBinding((ScrollView) rootView, containerMarkers);
+      id = R.id.seekSearchHold;
+      SeekBar seekSearchHold = ViewBindings.findChildViewById(rootView, id);
+      if (seekSearchHold == null) {
+        break missingId;
+      }
+
+      id = R.id.tvSearchHoldLabel;
+      TextView tvSearchHoldLabel = ViewBindings.findChildViewById(rootView, id);
+      if (tvSearchHoldLabel == null) {
+        break missingId;
+      }
+
+      return new DialogSettingsBinding((ScrollView) rootView, checkSticky, containerMarkers,
+          seekSearchHold, tvSearchHoldLabel);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

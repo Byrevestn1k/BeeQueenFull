@@ -27,8 +27,10 @@ class LiveActivity : AppCompatActivity() {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private const val PREFS_NAME = "beequeen_prefs"
         private const val KEY_STICKY_QUEEN = "sticky_queen"
+        private const val KEY_SEARCH_HOLD_MS = "search_hold_ms"
     }
 
+    // ===================== Marker config =====================
     data class MarkerConfig(
         val id: String,
         val title: String,
@@ -46,20 +48,20 @@ class LiveActivity : AppCompatActivity() {
         MarkerConfig("drone", "Трутні", Color.RED, 50)
     )
 
+    // ===================== Core =====================
     private lateinit var detector: DetectorHelper
     private lateinit var overlay: OverlayView
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var prefs: SharedPreferences
+    private val stickerGap = 12f
+    private val percentGap = 8f
 
-    private var lastDetectMs = 0L
-    private val MIN_DETECT_INTERVAL_MS = 120L
-
+    // ===================== Lifecycle =====================
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_live)
 
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-
         detector = DetectorHelper(this)
         overlay = findViewById(R.id.overlay)
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -83,31 +85,49 @@ class LiveActivity : AppCompatActivity() {
         cameraExecutor.shutdown()
     }
 
+    // ===================== Init =====================
     private fun initMarkersState() {
         for (m in markers) {
+
+            // enabled
             m.enabled = prefs.getBoolean("${m.id}_enabled", true)
 
-            // threshold: safe (Int or legacy Float)
-            val keyThr = "${m.id}_threshold"
+            // threshold (SAFE: Int or legacy Float)
+            val thrKey = "${m.id}_threshold"
             m.threshold = when {
-                prefs.contains(keyThr) -> {
+                prefs.contains(thrKey) -> {
                     try {
-                        prefs.getInt(keyThr, m.defaultThreshold)
-                    } catch (_: ClassCastException) {
-                        (prefs.getFloat(keyThr, m.defaultThreshold / 100f) * 100).toInt()
+                        // новий формат (Int, 10..90)
+                        prefs.getInt(thrKey, m.defaultThreshold)
+                    } catch (e: ClassCastException) {
+                        // старий формат (Float, 0.0..1.0)
+                        val legacy = prefs.getFloat(
+                            thrKey,
+                            m.defaultThreshold / 100f
+                        )
+                        val converted = (legacy * 100).toInt().coerceIn(10, 90)
+
+                        // 🔧 МІГРАЦІЯ: перезаписуємо в Int
+                        prefs.edit().putInt(thrKey, converted).apply()
+
+                        converted
                     }
                 }
                 else -> m.defaultThreshold
             }
 
+            // color
             m.color = prefs.getInt("${m.id}_color", m.defaultColor)
 
+            // apply to detector & overlay
             detector.setThreshold(m.id, m.threshold / 100f)
             overlay.setClassEnabled(m.id, m.enabled)
             overlay.setClassColor(m.id, m.color)
         }
     }
 
+
+    // ===================== Camera =====================
     private fun allPermissionsGranted(): Boolean =
         ContextCompat.checkSelfPermission(
             this, Manifest.permission.CAMERA
@@ -142,13 +162,6 @@ class LiveActivity : AppCompatActivity() {
     }
 
     private fun processFrame(imageProxy: ImageProxy) {
-        val now = System.currentTimeMillis()
-        if (now - lastDetectMs < MIN_DETECT_INTERVAL_MS) {
-            imageProxy.close()
-            return
-        }
-        lastDetectMs = now
-
         try {
             val img = imageProxy.image ?: return
             val bitmap = ImageUtils.imageToBitmap(
@@ -158,8 +171,6 @@ class LiveActivity : AppCompatActivity() {
 
             val results = detector.detect(bitmap)
 
-            // ✅ ВАЖЛИВО: передаємо ВСІ детекції.
-            // Top-1 queen та sticky вибір робить OverlayView.
             runOnUiThread {
                 overlay.setFrameInfo(bitmap.width, bitmap.height)
                 overlay.setResults(results)
@@ -171,14 +182,15 @@ class LiveActivity : AppCompatActivity() {
         }
     }
 
+    // ===================== Settings dialog =====================
     private fun showSettingsDialog() {
         val root = LayoutInflater.from(this)
             .inflate(R.layout.dialog_settings, null)
 
-        val container =
-            root.findViewById<LinearLayout>(R.id.containerMarkers)
+        val container = root.findViewById<LinearLayout>(R.id.containerMarkers)
         container.removeAllViews()
 
+        /* ---------- Sticky checkbox ---------- */
         val cbSticky = CheckBox(this).apply {
             text = "Sticky queen (tracker)"
             isChecked = prefs.getBoolean(KEY_STICKY_QUEEN, false)
@@ -188,6 +200,34 @@ class LiveActivity : AppCompatActivity() {
         }
         container.addView(cbSticky)
 
+        /* ---------- SEARCH hold slider ---------- */
+        val tvHold = TextView(this).apply {
+            setPadding(0, 24, 0, 0)
+            textSize = 14f
+        }
+
+        val seekHold = SeekBar(this).apply {
+            max = 20 // 0..10 сек (крок 0.5)
+        }
+
+        val currentMs = prefs.getLong(KEY_SEARCH_HOLD_MS, 3000L)
+        seekHold.progress = (currentMs / 500L).toInt()
+        tvHold.text = "Час пошуку матки: ${currentMs / 1000f} с"
+
+        seekHold.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(sb: SeekBar?, p: Int, f: Boolean) {
+                val ms = p * 500L
+                prefs.edit().putLong(KEY_SEARCH_HOLD_MS, ms).apply()
+                tvHold.text = "Час пошуку матки: ${ms / 1000f} с"
+            }
+            override fun onStartTrackingTouch(sb: SeekBar?) {}
+            override fun onStopTrackingTouch(sb: SeekBar?) {}
+        })
+
+        container.addView(tvHold)
+        container.addView(seekHold)
+
+        /* ---------- Marker settings ---------- */
         for (marker in markers) {
             val row = layoutInflater.inflate(
                 R.layout.item_marker_settings,
@@ -228,7 +268,6 @@ class LiveActivity : AppCompatActivity() {
                 override fun onStopTrackingTouch(sb: SeekBar?) {}
             })
 
-            // ✅ mark_queen — без вибору кольору
             if (marker.id == "mark_queen") {
                 seekCol.visibility = View.GONE
                 colorPreview.visibility = View.GONE
@@ -259,6 +298,7 @@ class LiveActivity : AppCompatActivity() {
             .show()
     }
 
+    // ===================== Helpers =====================
     private fun applyHsvGradient(seekBar: SeekBar) {
         seekBar.post {
             val w = seekBar.width

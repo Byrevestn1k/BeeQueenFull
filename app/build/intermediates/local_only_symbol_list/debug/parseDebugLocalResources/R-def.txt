@@ -2,6 +2,7 @@ R_DEF: Internal format may change without notice
 local
 drawable bg_color_preview
 drawable gradient_thumb
+drawable ic_eye
 drawable ic_launcher_background
 drawable ic_launcher_foreground
 drawable seekbar_track
@@ -19,6 +20,7 @@ id btnSettings
 id btnTest
 id btnTraining
 id checkEnabled
+id checkSticky
 id containerMarkers
 id imageView
 id imgThumb
@@ -26,12 +28,14 @@ id overlay
 id root
 id rvImages
 id seekColor
+id seekSearchHold
 id seekThreshold
 id switchCloud
 id tvColorLabel
 id tvConfidence
 id tvInfo
 id tvLabel
+id tvSearchHoldLabel
 id tvTitle
 id txtResult
 id viewColorPreview

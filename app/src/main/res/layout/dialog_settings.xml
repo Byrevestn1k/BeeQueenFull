@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -7,5 +8,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"/>
+        android:padding="16dp">
+
+        <!-- Sticky checkbox -->
+        <CheckBox
+            android:id="@+id/checkSticky"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sticky queen (tracker)" />
+
+        <!-- SEARCH hold slider -->
+        <TextView
+            android:id="@+id/tvSearchHoldLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Час пошуку матки: 3.0 с"
+            android:layout_marginTop="12dp"
+            android:textSize="14sp"/>
+
+        <SeekBar
+            android:id="@+id/seekSearchHold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="20"/>
+
+    </LinearLayout>
 </ScrollView>

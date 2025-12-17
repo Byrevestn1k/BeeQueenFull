@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
 import kotlin.math.abs
 import kotlin.math.hypot
 
@@ -15,10 +16,18 @@ class OverlayView @JvmOverloads constructor(
     companion object {
         private const val PREFS_NAME = "beequeen_prefs"
         private const val KEY_STICKY_QUEEN = "sticky_queen"
+        private const val KEY_SEARCH_HOLD_MS = "search_hold_ms"
     }
 
-    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    private fun stickyEnabled() = prefs.getBoolean(KEY_STICKY_QUEEN, false)
+    // ================= Preferences =================
+    private val prefs =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
+    private fun stickyEnabled(): Boolean =
+        prefs.getBoolean(KEY_STICKY_QUEEN, false)
+
+    private fun getSearchHoldMs(): Long =
+        prefs.getLong(KEY_SEARCH_HOLD_MS, 3000L)
 
     // ================= Paints =================
     private val queenPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -33,18 +42,21 @@ class OverlayView @JvmOverloads constructor(
         color = Color.RED
     }
 
-    private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+    private val percentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
         textSize = 36f
         typeface = Typeface.DEFAULT_BOLD
     }
 
-    private val labelBgPaint = Paint().apply {
+    private val percentBgPaint = Paint().apply {
         color = Color.BLACK
         alpha = 160
     }
 
-    private val statePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    // ================= Eye drawable =================
+    private val eyeDrawable by lazy {
+        ContextCompat.getDrawable(context, R.drawable.ic_eye)!!
+    }
 
     // ================= State =================
     private var results: List<DetectorHelper.DetectionResult> = emptyList()
@@ -61,7 +73,6 @@ class OverlayView @JvmOverloads constructor(
     private val radiusMaxJumpRatio = 0.6f
     private val markedQueenRadiusMultiplier = 3.5f
 
-    private val queenHoldMs = 3000L
     private var lastQueenRect: RectF? = null
     private var lastQueenRadius: Float? = null
     private var lastQueenScore = 0f
@@ -73,6 +84,10 @@ class OverlayView @JvmOverloads constructor(
 
     private enum class TrackState { LOCK, SEARCH, LOST }
     private var trackState: TrackState? = null
+
+    // layout gaps
+    private val stickerGap = 12f
+    private val percentGap = 8f
 
     // ================= API =================
     fun setFrameInfo(w: Int, h: Int) {
@@ -148,10 +163,12 @@ class OverlayView @JvmOverloads constructor(
         sticky: Boolean
     ): Pair<DetectorHelper.DetectionResult, RectF>? {
         if (queens.isEmpty()) return null
-        if (!sticky || !locked || lastQueenCx == null) {
+
+        if (!sticky || !locked || lastQueenCx == null || lastQueenCy == null) {
             locked = sticky
             return queens.maxByOrNull { it.first.score }
         }
+
         return queens.minByOrNull {
             val dx = it.second.centerX() - lastQueenCx!!
             val dy = it.second.centerY() - lastQueenCy!!
@@ -173,19 +190,11 @@ class OverlayView @JvmOverloads constructor(
         val diag = hypot(smooth.width(), smooth.height())
         var radius = (diag * 3f) / 2f
         if (label == "mark_queen") radius *= markedQueenRadiusMultiplier
-
-
-         fun clampRadiusToScreen(radius: Float): Float {
-            val minSide = width.coerceAtMost(height).toFloat()
-            val maxDiameter = minSide * 0.75f
-            val maxRadius = maxDiameter / 2f
-            return radius.coerceAtMost(maxRadius)
-        }
-
         radius = smoothRadius(radius)
         radius = clampRadiusToScreen(radius)
 
         queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
+        queenPaint.alpha = 255
         canvas.drawCircle(cx, cy, radius, queenPaint)
 
         lastQueenCx = cx
@@ -197,8 +206,8 @@ class OverlayView @JvmOverloads constructor(
 
         if (sticky) trackState = TrackState.LOCK
 
-        drawStateSquare(canvas, cx, cy, radius)
-        drawPercent(canvas, cx, cy, sticky)
+        drawConfidencePercent(canvas, cx, cy, radius)
+        drawEyeSticker(canvas, cx, cy, radius)
     }
 
     private fun drawHold(canvas: Canvas, now: Long, sticky: Boolean) {
@@ -206,63 +215,74 @@ class OverlayView @JvmOverloads constructor(
         val r = lastQueenRadius ?: return
 
         val elapsed = now - lastSeenMs
-        if (elapsed <= queenHoldMs) {
+        if (elapsed <= getSearchHoldMs()) {
             queenPaint.alpha =
-                ((1f - elapsed.toFloat() / queenHoldMs) * 255).toInt()
+                ((1f - elapsed.toFloat() / getSearchHoldMs()) * 255).toInt()
             canvas.drawCircle(rect.centerX(), rect.centerY(), r, queenPaint)
+
             if (sticky) trackState = TrackState.SEARCH
-            drawStateSquare(canvas, rect.centerX(), rect.centerY(), r)
-            drawPercent(canvas, rect.centerX(), rect.centerY(), sticky)
+
+            drawConfidencePercent(canvas, rect.centerX(), rect.centerY(), r)
+            drawEyeSticker(canvas, rect.centerX(), rect.centerY(), r)
         } else {
-            if (sticky) trackState = TrackState.LOST
+            trackState = TrackState.LOST
             clearLock()
         }
     }
 
     // ================= UI helpers =================
-    private fun drawStateSquare(canvas: Canvas, cx: Float, cy: Float, r: Float) {
+    private fun drawEyeSticker(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        radius: Float
+    ) {
         val state = trackState ?: return
+        if (state == TrackState.LOST) return
 
-        statePaint.color = when (state) {
+        val tint = when (state) {
             TrackState.LOCK -> Color.GREEN
             TrackState.SEARCH -> Color.YELLOW
-            TrackState.LOST -> Color.RED
+            TrackState.LOST -> return
         }
 
-        val size = r * 0.25f
-        val left = cx + r * 0.7f
-        val top = cy - r * 0.7f
+        val size = (radius * 0.34f).toInt()
+        val left = (cx + radius + stickerGap).toInt()
+        val top = (cy - size / 2).toInt()
 
-        canvas.drawRect(
-            left,
-            top,
-            left + size,
-            top + size,
-            statePaint
-        )
+        eyeDrawable.setBounds(left, top, left + size, top + size)
+        eyeDrawable.setTint(tint)
+        eyeDrawable.alpha = 200
+        eyeDrawable.draw(canvas)
     }
 
-    private fun drawPercent(canvas: Canvas, cx: Float, cy: Float, sticky: Boolean) {
+    private fun drawConfidencePercent(
+        canvas: Canvas,
+        cx: Float,
+        cy: Float,
+        radius: Float
+    ) {
         if (trackState == TrackState.LOST) return
 
         val text = "${(lastQueenScore * 100).toInt()}%"
-        val w = labelPaint.measureText(text)
-        val h = labelPaint.textSize
+        val textW = percentPaint.measureText(text)
+        val textH = percentPaint.textSize
 
-        val x = cx - w / 2
-        val y = cy + h / 2
+        val x = cx + radius + stickerGap - percentGap - textW
+        val y = cy + textH / 2
 
         val bg = RectF(
             x - 8,
-            y - h,
-            x + w + 8,
+            y - textH,
+            x + textW + 8,
             y + 6
         )
 
-        canvas.drawRect(bg, labelBgPaint)
-        canvas.drawText(text, x, y, labelPaint)
+        canvas.drawRect(bg, percentBgPaint)
+        canvas.drawText(text, x, y, percentPaint)
     }
 
+    // ================= Utils =================
     private fun smoothRadius(curr: Float): Float {
         val prev = lastEmaRadius ?: run {
             lastEmaRadius = curr
@@ -276,6 +296,12 @@ class OverlayView @JvmOverloads constructor(
         val smoothed = prev * (1f - radiusAlpha) + curr * radiusAlpha
         lastEmaRadius = smoothed
         return smoothed
+    }
+
+    private fun clampRadiusToScreen(radius: Float): Float {
+        val minSide = width.coerceAtMost(height).toFloat()
+        val maxDiameter = minSide * 0.75f
+        return radius.coerceAtMost(maxDiameter / 2f)
     }
 
     private fun clearLock() {
