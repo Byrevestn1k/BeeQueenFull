@@ -18,41 +18,35 @@ class OverlayView @JvmOverloads constructor(
     }
 
     private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private fun stickyEnabled() = prefs.getBoolean(KEY_STICKY_QUEEN, false)
 
-    private fun stickyEnabled(): Boolean =
-        prefs.getBoolean(KEY_STICKY_QUEEN, false)
-
-    // ===============================
-    // Paints
-    // ===============================
-    private val queenPaint = Paint().apply {
+    // ================= Paints =================
+    private val queenPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = 8f
         color = Color.MAGENTA
-        isAntiAlias = true
     }
 
-    private val otherPaint = Paint().apply {
+    private val otherPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeWidth = 6f
         color = Color.RED
-        isAntiAlias = true
     }
 
-    private val textPaint = Paint().apply {
+    private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = Color.WHITE
-        textSize = 42f
-        isAntiAlias = true
+        textSize = 36f
+        typeface = Typeface.DEFAULT_BOLD
     }
 
-    private val textBgPaint = Paint().apply {
+    private val labelBgPaint = Paint().apply {
         color = Color.BLACK
         alpha = 160
     }
 
-    // ===============================
-    // State
-    // ===============================
+    private val statePaint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    // ================= State =================
     private var results: List<DetectorHelper.DetectionResult> = emptyList()
     private var imageWidth = 0
     private var imageHeight = 0
@@ -67,21 +61,20 @@ class OverlayView @JvmOverloads constructor(
     private val radiusMaxJumpRatio = 0.6f
     private val markedQueenRadiusMultiplier = 3.5f
 
-    private val queenHoldDurationMs = 1000L
+    private val queenHoldMs = 3000L
     private var lastQueenRect: RectF? = null
     private var lastQueenRadius: Float? = null
     private var lastQueenScore = 0f
     private var lastSeenMs = 0L
 
-    // Sticky tracking state
-    private var lastStickyEnabled = false
     private var locked = false
     private var lastQueenCx: Float? = null
     private var lastQueenCy: Float? = null
 
-    // ===============================
-    // API (НЕ МІНЯЄМО)
-    // ===============================
+    private enum class TrackState { LOCK, SEARCH, LOST }
+    private var trackState: TrackState? = null
+
+    // ================= API =================
     fun setFrameInfo(w: Int, h: Int) {
         imageWidth = w
         imageHeight = h
@@ -102,67 +95,52 @@ class OverlayView @JvmOverloads constructor(
         invalidate()
     }
 
-    // ===============================
-    // Draw
-    // ===============================
+    // ================= Draw =================
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (imageWidth == 0 || imageHeight == 0) return
 
-        val now = System.currentTimeMillis()
         val sticky = stickyEnabled()
+        val now = System.currentTimeMillis()
 
-        // якщо sticky вимкнули — скидаємо lock
-        if (lastStickyEnabled && !sticky) {
-            clearLock()
-        }
-        lastStickyEnabled = sticky
+        if (!sticky) trackState = null
 
         if (results.isEmpty()) {
-            // якщо детекцій нема, але є last queen — відмалюємо hold/fade (v1.5)
-            drawHoldFadeIfNeeded(canvas, now, sticky)
+            drawHold(canvas, now, sticky)
             return
         }
 
         val sx = width.toFloat() / imageWidth
         val sy = height.toFloat() / imageHeight
 
-        val queens = ArrayList<Pair<DetectorHelper.DetectionResult, RectF>>()
-        val others = ArrayList<Pair<DetectorHelper.DetectionResult, RectF>>()
+        val queens = mutableListOf<Pair<DetectorHelper.DetectionResult, RectF>>()
+        val others = mutableListOf<Pair<DetectorHelper.DetectionResult, RectF>>()
 
         for (r in results) {
             if (enabledClasses[r.label] == false) continue
-
             val rect = RectF(
                 r.box.left * sx,
                 r.box.top * sy,
                 r.box.right * sx,
                 r.box.bottom * sy
             )
-
-            if (r.label == "beequeen" || r.label == "mark_queen") {
-                queens.add(r to rect)
-            } else {
-                others.add(r to rect)
-            }
+            if (r.label == "beequeen" || r.label == "mark_queen") queens += r to rect
+            else others += r to rect
         }
 
-        // спершу малюємо НЕ-матку
         for ((r, rect) in others) {
             otherPaint.color = classColors[r.label] ?: Color.RED
             canvas.drawRect(rect, otherPaint)
-            drawLabel(canvas, r.label, r.score, rect)
         }
 
-        // далі — матка (тільки ОДНА)
         val selected = selectQueen(queens, sticky)
         if (selected == null) {
-            drawHoldFadeIfNeeded(canvas, now, sticky)
+            drawHold(canvas, now, sticky)
             return
         }
 
-        val (qr, qrect) = selected
-        drawQueen(canvas, qrect, qr.score, qr.label)
+        val (qr, rect) = selected
+        drawQueen(canvas, rect, qr.score, qr.label, sticky)
     }
 
     private fun selectQueen(
@@ -170,54 +148,24 @@ class OverlayView @JvmOverloads constructor(
         sticky: Boolean
     ): Pair<DetectorHelper.DetectionResult, RectF>? {
         if (queens.isEmpty()) return null
-
-        // Sticky OFF → як v1.5: top-1 queen
-        if (!sticky) {
+        if (!sticky || !locked || lastQueenCx == null) {
+            locked = sticky
             return queens.maxByOrNull { it.first.score }
         }
-
-        // Sticky ON:
-        // 1) якщо ще не locked — lock на top-1
-        if (!locked || lastQueenCx == null || lastQueenCy == null) {
-            val top = queens.maxByOrNull { it.first.score } ?: return null
-            locked = true
-            return top
-        }
-
-        // 2) якщо locked — беремо найближчу матку до попереднього центру
-        val cx = lastQueenCx!!
-        val cy = lastQueenCy!!
-
-        return queens.minByOrNull { (_, rect) ->
-            val dx = rect.centerX() - cx
-            val dy = rect.centerY() - cy
+        return queens.minByOrNull {
+            val dx = it.second.centerX() - lastQueenCx!!
+            val dy = it.second.centerY() - lastQueenCy!!
             dx * dx + dy * dy
         }
     }
 
-    private fun drawHoldFadeIfNeeded(canvas: Canvas, now: Long, sticky: Boolean) {
-        if (lastQueenRect == null || lastQueenRadius == null) return
-
-        val elapsed = now - lastSeenMs
-        if (elapsed <= queenHoldDurationMs) {
-            val alpha = ((1f - elapsed.toFloat() / queenHoldDurationMs) * 255)
-                .toInt().coerceIn(0, 255)
-            queenPaint.alpha = alpha
-
-            canvas.drawCircle(
-                lastQueenRect!!.centerX(),
-                lastQueenRect!!.centerY(),
-                lastQueenRadius!!,
-                queenPaint
-            )
-            drawLabel(canvas, "queen", lastQueenScore, lastQueenRect!!)
-        } else {
-            resetQueen()
-            if (sticky) clearLock()
-        }
-    }
-
-    private fun drawQueen(canvas: Canvas, rect: RectF, score: Float, label: String) {
+    private fun drawQueen(
+        canvas: Canvas,
+        rect: RectF,
+        score: Float,
+        label: String,
+        sticky: Boolean
+    ) {
         val smooth = queenSmoother.smooth(rect)
         val cx = smooth.centerX()
         val cy = smooth.centerY()
@@ -225,13 +173,21 @@ class OverlayView @JvmOverloads constructor(
         val diag = hypot(smooth.width(), smooth.height())
         var radius = (diag * 3f) / 2f
         if (label == "mark_queen") radius *= markedQueenRadiusMultiplier
-        radius = smoothRadius(radius)
 
-        queenPaint.alpha = 255
+
+         fun clampRadiusToScreen(radius: Float): Float {
+            val minSide = width.coerceAtMost(height).toFloat()
+            val maxDiameter = minSide * 0.75f
+            val maxRadius = maxDiameter / 2f
+            return radius.coerceAtMost(maxRadius)
+        }
+
+        radius = smoothRadius(radius)
+        radius = clampRadiusToScreen(radius)
+
         queenPaint.color = classColors["beequeen"] ?: Color.MAGENTA
         canvas.drawCircle(cx, cy, radius, queenPaint)
 
-        // оновлюємо “останню матку”
         lastQueenCx = cx
         lastQueenCy = cy
         lastQueenRect = RectF(cx - radius, cy - radius, cx + radius, cy + radius)
@@ -239,7 +195,72 @@ class OverlayView @JvmOverloads constructor(
         lastQueenScore = score
         lastSeenMs = System.currentTimeMillis()
 
-        drawLabel(canvas, "queen", score, lastQueenRect!!)
+        if (sticky) trackState = TrackState.LOCK
+
+        drawStateSquare(canvas, cx, cy, radius)
+        drawPercent(canvas, cx, cy, sticky)
+    }
+
+    private fun drawHold(canvas: Canvas, now: Long, sticky: Boolean) {
+        val rect = lastQueenRect ?: return
+        val r = lastQueenRadius ?: return
+
+        val elapsed = now - lastSeenMs
+        if (elapsed <= queenHoldMs) {
+            queenPaint.alpha =
+                ((1f - elapsed.toFloat() / queenHoldMs) * 255).toInt()
+            canvas.drawCircle(rect.centerX(), rect.centerY(), r, queenPaint)
+            if (sticky) trackState = TrackState.SEARCH
+            drawStateSquare(canvas, rect.centerX(), rect.centerY(), r)
+            drawPercent(canvas, rect.centerX(), rect.centerY(), sticky)
+        } else {
+            if (sticky) trackState = TrackState.LOST
+            clearLock()
+        }
+    }
+
+    // ================= UI helpers =================
+    private fun drawStateSquare(canvas: Canvas, cx: Float, cy: Float, r: Float) {
+        val state = trackState ?: return
+
+        statePaint.color = when (state) {
+            TrackState.LOCK -> Color.GREEN
+            TrackState.SEARCH -> Color.YELLOW
+            TrackState.LOST -> Color.RED
+        }
+
+        val size = r * 0.25f
+        val left = cx + r * 0.7f
+        val top = cy - r * 0.7f
+
+        canvas.drawRect(
+            left,
+            top,
+            left + size,
+            top + size,
+            statePaint
+        )
+    }
+
+    private fun drawPercent(canvas: Canvas, cx: Float, cy: Float, sticky: Boolean) {
+        if (trackState == TrackState.LOST) return
+
+        val text = "${(lastQueenScore * 100).toInt()}%"
+        val w = labelPaint.measureText(text)
+        val h = labelPaint.textSize
+
+        val x = cx - w / 2
+        val y = cy + h / 2
+
+        val bg = RectF(
+            x - 8,
+            y - h,
+            x + w + 8,
+            y + 6
+        )
+
+        canvas.drawRect(bg, labelBgPaint)
+        canvas.drawText(text, x, y, labelPaint)
     }
 
     private fun smoothRadius(curr: Float): Float {
@@ -261,24 +282,5 @@ class OverlayView @JvmOverloads constructor(
         locked = false
         lastQueenCx = null
         lastQueenCy = null
-    }
-
-    private fun resetQueen() {
-        lastQueenRect = null
-        lastQueenRadius = null
-        lastQueenScore = 0f
-        lastSeenMs = 0L
-        lastEmaRadius = null
-        queenSmoother.reset()
-        queenPaint.alpha = 255
-    }
-
-    private fun drawLabel(canvas: Canvas, label: String, score: Float, rect: RectF) {
-        val text = "$label ${(score * 100).toInt()}%"
-        val w = textPaint.measureText(text)
-        val h = textPaint.textSize
-        val bg = RectF(rect.left, rect.top - h - 8, rect.left + w + 16, rect.top + 4)
-        canvas.drawRect(bg, textBgPaint)
-        canvas.drawText(text, rect.left + 8, rect.top - 8, textPaint)
     }
 }
